@@ -6,7 +6,7 @@ import { fetchAllThreads } from "@states/thread/AllThreadSlice";
 import { useEffect } from "react";
 
 const LandingPage = () => {
-  const threads = useAppSelector((state) => state.allThreadSlice);
+  const threads = useAppSelector((state) => state.thread);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

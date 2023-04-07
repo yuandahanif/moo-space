@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { Route } from "wouter";
 
 function App() {
-  const profile = useAppSelector((state) => state.userProfileSlice);
+  const profile = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

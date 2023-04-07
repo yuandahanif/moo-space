@@ -1,26 +1,31 @@
-import ThreadCard from "@components/card/thread.card";
 import Error from "@components/error/error";
 import Loading from "@components/loading/loading";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
-import { fetchAllThreads } from "@states/thread/AllThreadSlice";
+import { fetchLeaderboard } from "@states/leaderboard/LeaderboardSlice";
 import { useEffect } from "react";
 
 const LeaderboardPage = () => {
-  const threads = useAppSelector((state) => state.allThreadSlice);
+  const data = useAppSelector((state) => state.leaderboard);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllThreads());
+    dispatch(fetchLeaderboard());
   }, []);
 
   return (
     <div className="grow">
-      Leaderboard
-      <div className="flex flex-col gap-y-4">
-        {threads.status == "error" && <Error />}
-        {threads.status == "loading" && <Loading />}
-        {threads.status == "success" &&
-          threads.threads.map((t) => <ThreadCard key={t.id} thread={t} />)}
+      <h1 className="text-2xl">Leaderboard</h1>
+      <div className="mt-8 flex flex-col gap-y-4">
+        {data.status == "error" && <Error />}
+
+        {data.status == "loading" && <Loading />}
+
+        {data.status == "success" &&
+          data.leaderboard.map((t) => (
+            <div key={t.user.id} className="border p-3 flex">
+              <span className="mr-auto">{t.user.name}</span><span>{t.score}</span>
+            </div>
+          ))}
       </div>
     </div>
   );

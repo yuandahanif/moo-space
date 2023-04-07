@@ -1,1 +1,4 @@
-type Leaderboard = { score: number } | User;
+interface Leaderboard {
+  score: number;
+  user: User;
+}

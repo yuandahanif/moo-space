@@ -267,7 +267,26 @@ const api = (() => {
     }
   }
 
-  // TODO: vote and leaderboard
+  // TODO: vote
+
+  async function getLeaderboard() {
+    const response = await fetch(`${BASE_URL}/leaderboards`);
+    const responseJson = (await response.json()) as API_Wrapper<{
+      leaderboards: Leaderboard[];
+    }>;
+
+    const { status, message } = responseJson;
+
+    if (status !== "success") {
+      throw new Error(message);
+    }
+
+    const {
+      data: { leaderboards },
+    } = responseJson;
+
+    return leaderboards;
+  }
 
   return {
     putAccessToken,
@@ -281,6 +300,7 @@ const api = (() => {
     toggleLikeTalk,
     getThreadDetail,
     createComment,
+    getLeaderboard,
   };
 })();
 

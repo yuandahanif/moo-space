@@ -2,7 +2,7 @@ import { Link } from "wouter";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 flex rounded-b-lg border bg-white p-6 py-6 shadow-md">
+    <header className="sticky top-0 z-50 flex rounded-b-lg border bg-white p-6 py-6 shadow-md items-center">
       <div aria-label="Forum sepi, eh sapi moo . . ." className="w-10 h-10">
         <img src="/canvas.svg" alt="canvas logo" className="object-contain" />
       </div>
