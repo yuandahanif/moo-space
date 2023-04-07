@@ -7,7 +7,7 @@ const initialState: {
   status: API_Status;
 } = {
   threads: [],
-  status: "loading",
+  status: "idle",
 };
 
 export const fetchAllThreads = createAsyncThunk("threads/getAll", async () => {

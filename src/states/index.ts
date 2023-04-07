@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import allThreadSlice from "@states/thread/AllThreadSlice";
+import userProfileSlice from "@states/user/ProfileSlice";
 
 const store = configureStore({
-  reducer: { allThreadSlice },
+  reducer: { allThreadSlice, userProfileSlice },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

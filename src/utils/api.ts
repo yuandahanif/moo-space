@@ -2,11 +2,17 @@ const api = (() => {
   const BASE_URL = import.meta.env.VITE_API_URL;
 
   async function _fetchWithAuth(url: string, options: RequestInit = {}) {
+    const accessToken = getAccessToken();
+
+    if (!accessToken) {
+      throw new Error("No Access Token");
+    }
+
     return fetch(url, {
       ...options,
       headers: {
         ...options.headers,
-        Authorization: `Bearer ${getAccessToken()}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
   }
@@ -96,7 +102,7 @@ const api = (() => {
 
     const { status, message } = responseJson;
 
-    if (status !== "success") {
+    if (status != "success") {
       throw new Error(message);
     }
 
