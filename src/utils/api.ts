@@ -127,28 +127,11 @@ const api = (() => {
     return users;
   }
 
-  async function getAllTalks() {
-    const response = await fetch(`${BASE_URL}/talks`);
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== "success") {
-      throw new Error(message);
-    }
-
-    const {
-      data: { talks },
-    } = responseJson;
-
-    return talks;
-  }
-
-  async function getTalkDetail(id: string) {
-    const response = await fetch(`${BASE_URL}/talks/${id}`);
-
-    const responseJson = await response.json();
+  async function getAllThreads() {
+    const response = await fetch(`${BASE_URL}/threads`);
+    const responseJson = (await response.json()) as API_Wrapper<{
+      threads: Thread[];
+    }>;
 
     const { status, message } = responseJson;
 
@@ -157,31 +140,56 @@ const api = (() => {
     }
 
     const {
-      data: { talkDetail },
+      data: { threads },
     } = responseJson;
 
-    return talkDetail;
+    return threads;
   }
 
-  async function createTalk({
-    text,
-    replyTo = "",
+  async function getThreadDetail(id: string) {
+    const response = await fetch(`${BASE_URL}/threads/${id}`);
+
+    const responseJson = (await response.json()) as API_Wrapper<{
+      detailThread: Thread_Detail;
+    }>;
+
+    const { status, message } = responseJson;
+
+    if (status !== "success") {
+      throw new Error(message);
+    }
+
+    const {
+      data: { detailThread },
+    } = responseJson;
+
+    return detailThread;
+  }
+
+  async function createThreads({
+    body,
+    category,
+    title,
   }: {
-    text: string;
-    replyTo: string;
+    title: string;
+    body: string;
+    category: string;
   }) {
-    const response = await _fetchWithAuth(`${BASE_URL}/talks`, {
+    const response = await _fetchWithAuth(`${BASE_URL}/threads`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        text,
-        replyTo,
+        title,
+        body,
+        category,
       }),
     });
 
-    const responseJson = await response.json();
+    const responseJson = (await response.json()) as API_Wrapper<{
+      thread: Thread;
+    }>;
 
     const { status, message } = responseJson;
 
@@ -190,10 +198,47 @@ const api = (() => {
     }
 
     const {
-      data: { talk },
+      data: { thread },
     } = responseJson;
 
-    return talk;
+    return thread;
+  }
+
+  async function createComment({
+    id,
+    content,
+  }: {
+    id: string;
+    content: string;
+  }) {
+    const response = await _fetchWithAuth(
+      `${BASE_URL}/threads/${id}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content,
+        }),
+      }
+    );
+
+    const responseJson = (await response.json()) as API_Wrapper<{
+      comment: Comment;
+    }>;
+
+    const { status, message } = responseJson;
+
+    if (status !== "success") {
+      throw new Error(message);
+    }
+
+    const {
+      data: { comment },
+    } = responseJson;
+
+    return comment;
   }
 
   async function toggleLikeTalk(id: string) {
@@ -216,6 +261,8 @@ const api = (() => {
     }
   }
 
+  // TODO: vote and leaderboard
+
   return {
     putAccessToken,
     getAccessToken,
@@ -223,10 +270,11 @@ const api = (() => {
     login,
     getOwnProfile,
     getAllUsers,
-    getAllTalks,
-    createTalk,
+    getAllThreads,
+    createThreads,
     toggleLikeTalk,
-    getTalkDetail,
+    getThreadDetail,
+    createComment,
   };
 })();
 
