@@ -17,7 +17,6 @@ const LeaderboardPage = () => {
       <h1 className="text-2xl">Leaderboard</h1>
       <div className="mt-8 flex flex-col gap-y-4">
         {data.status == "error" && <Error />}
-
         {data.status == "loading" && <Loading />}
 
         {data.status == "success" &&

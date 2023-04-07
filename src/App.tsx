@@ -1,3 +1,4 @@
+import Register from "@components/auth/register";
 import Loading from "@components/loading/loading";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import MainLayout from "@layouts/main.layout";
@@ -12,7 +13,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchProfile());
+    // dispatch(fetchProfile());
   }, []);
 
   return (
@@ -31,7 +32,12 @@ function App() {
         <aside className="flex w-1/4 flex-col gap-y-4 py-6">
           <div className="sticky top-24 flex flex-col items-center rounded-lg border bg-white py-8 shadow-sm duration-300 hover:shadow-lg">
             {profile.status == "loading" && <Loading />}
-            {profile.status == "error" && <div>Masuk atau daftar.</div>}
+            {profile.status == "error" && (
+              <>
+                <Register />
+                <div>Masuk atau daftar.</div>
+              </>
+            )}
             {profile.status == "success" && (
               <>
                 <div className="h-20 w-20 rounded-full bg-red-300"></div>
