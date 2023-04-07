@@ -4,7 +4,7 @@ import api from "@utils/api";
 // Define the initial state using that type
 const initialState: {
   threads: Thread[];
-  status: "loading" | "success" | "failed";
+  status: API_Status;
 } = {
   threads: [],
   status: "loading",
@@ -37,7 +37,8 @@ export const allThreadSlice = createSlice({
         state.threads = action.payload;
       })
       .addCase(fetchAllThreads.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "error";
+        state.threads = [];
       });
   },
 });

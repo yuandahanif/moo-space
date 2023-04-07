@@ -1,3 +1,4 @@
+import Header from "@components/header/header";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -12,6 +13,7 @@ const MainLayout: React.FC<Props> = ({ children, className }) => {
       <div
         className={twMerge(" min-h-screen w-full max-w-screen-xl ", className)}
       >
+        <Header />
         {children}
       </div>
     </div>
