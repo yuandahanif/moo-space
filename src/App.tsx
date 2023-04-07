@@ -1,19 +1,17 @@
-import ThreadCard from "@components/card/thread.card";
 import Loading from "@components/loading/loading";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import MainLayout from "@layouts/main.layout";
-import { fetchAllThreads } from "@states/thread/AllThreadSlice";
+import LandingPage from "@pages/landing/landing";
+import LeaderboardPage from "@pages/leaderboard/leaderboard";
 import { fetchProfile } from "@states/user/ProfileSlice";
 import { useEffect } from "react";
+import { Route } from "wouter";
 
 function App() {
-  const threads = useAppSelector((state) => state.allThreadSlice);
   const profile = useAppSelector((state) => state.userProfileSlice);
-  console.log("file: App.tsx:11 ~ App ~ profile:", profile);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllThreads());
     dispatch(fetchProfile());
   }, []);
 
@@ -21,22 +19,24 @@ function App() {
     <MainLayout>
       <main className="flex">
         <article className="w-3/4 py-6 pr-8">
-          <div className="flex flex-col gap-y-4">
-            {threads.status == "loading" && <Loading />}
-            {threads.status == "success" &&
-              threads.threads.map((t) => <ThreadCard key={t.id} thread={t} />)}
-          </div>
+          <Route path="/leaderboard">
+            <LeaderboardPage />
+          </Route>
+
+          <Route path="/">
+            <LandingPage />
+          </Route>
         </article>
 
         <aside className="flex w-1/4 flex-col gap-y-4 py-6">
           <div className="sticky top-24 flex flex-col items-center rounded-lg border bg-white py-8 shadow-sm duration-300 hover:shadow-lg">
             {profile.status == "loading" && <Loading />}
-            {profile.status == "error" && <div>Masuk</div>}
+            {profile.status == "error" && <div>Masuk atau daftar.</div>}
             {profile.status == "success" && (
               <>
                 <div className="h-20 w-20 rounded-full bg-red-300"></div>
-                <span>Yuanda</span>
-                <span>yuan@fake.mail</span>
+                <span>{profile.profile?.name}</span>
+                <span>{profile.profile?.name}</span>
               </>
             )}
           </div>
