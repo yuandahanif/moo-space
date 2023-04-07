@@ -8,8 +8,10 @@ interface Props {
 
 const MainLayout: React.FC<Props> = ({ children, className }) => {
   return (
-    <div className="">
-      <div className={twMerge("", className)}>{children}</div>
+    <div className="flex justify-center">
+      <div className={twMerge("bg-slate-400 max-w-screen-xl w-full min-h-screen", className)}>
+        {children}
+      </div>
     </div>
   );
 };
