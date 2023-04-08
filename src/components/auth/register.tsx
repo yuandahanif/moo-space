@@ -1,14 +1,30 @@
 import Button from "@components/form/button";
 import Input from "@components/form/input";
+import useOnClickOutside from "@hooks/useClickOutside";
 import useInput from "@hooks/useInput";
+import React, { useRef } from "react";
 
-const Register = () => {
+interface Props {
+  onHide?: () => void;
+  onOpen?: () => void;
+}
+
+const Register: React.FC<Props> = ({ onHide, onOpen }) => {
   const [email, setEmailOnChange] = useInput();
   const [name, setNameOnChange] = useInput();
   const [password, setPasswordOnChange] = useInput();
+
+  const registerRef = useRef<null | HTMLDivElement>(null);
+  useOnClickOutside(registerRef, () => {
+    if (onHide) onHide();
+  });
+
   return (
     <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex w-full flex-col items-center justify-center gap-4 bg-slate-600 bg-opacity-10 py-6">
-      <div className="flex flex-col gap-y-5 rounded-lg bg-white p-8">
+      <div
+        ref={registerRef}
+        className="flex flex-col gap-y-5 rounded-lg bg-white p-8"
+      >
         <div className=" mb-8 flex flex-col items-center justify-start gap-y-5">
           <h2 className="text-center text-2xl font-semibold">
             Daftar MOO Space
@@ -45,7 +61,7 @@ const Register = () => {
             onChange={setPasswordOnChange}
           />
 
-          <span className="text-sm ml-auto">
+          <span className="ml-auto text-sm">
             Sudah punya akun? <button>Masuk</button>
           </span>
         </div>

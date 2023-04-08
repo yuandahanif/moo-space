@@ -13,6 +13,9 @@ const initialState: {
 export const fetchProfile = createAsyncThunk("user/ownProfile", async () => {
   try {
     const profile = await api.getOwnProfile();
+    if (profile == null) {
+      throw new Error("failed to get profile.");
+    }
     return profile;
   } catch (error) {
     throw error;

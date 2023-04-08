@@ -5,10 +5,13 @@ import MainLayout from "@layouts/main.layout";
 import LandingPage from "@pages/landing/landing";
 import LeaderboardPage from "@pages/leaderboard/leaderboard";
 import { fetchProfile } from "@states/user/ProfileSlice";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Route } from "wouter";
 
+type modalType = "login" | "register" | "none";
 function App() {
+  const [displayModal, setDisplayModal] = useState<modalType>("none");
+
   const threads = useAppSelector((state) => state.thread);
   const profile = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
@@ -23,12 +26,19 @@ function App() {
     return returnCategory;
   }, [threads]);
 
+  const openModal = (name: modalType) => {
+    setDisplayModal(name);
+  };
+
   useEffect(() => {
-    // dispatch(fetchProfile());
+    dispatch(fetchProfile());
   }, []);
 
   return (
     <MainLayout>
+      {displayModal == "register" && (
+        <Register onHide={() => setDisplayModal("none")} />
+      )}
       <main className="flex">
         <article className="w-3/4 py-6 pr-8">
           <Route path="/leaderboard">
@@ -43,12 +53,29 @@ function App() {
         <aside className="flex w-1/4 flex-col gap-y-4 py-6">
           <div className="sticky top-24 flex flex-col items-center rounded-lg border bg-white py-8 shadow-sm duration-300 hover:shadow-lg">
             {profile.status == "loading" && <Loading />}
-            {profile.status == "idle" && (
+            {profile.status == "error" && (
               <>
-                <Register />
-                <div>Masuk atau daftar.</div>
+                <div>
+                  <button
+                    onClick={() => {
+                      openModal("login");
+                    }}
+                  >
+                    Masuk
+                  </button>{" "}
+                  atau{" "}
+                  <button
+                    onClick={() => {
+                      openModal("register");
+                    }}
+                  >
+                    Daftar
+                  </button>{" "}
+                  .
+                </div>
               </>
             )}
+
             {profile.status == "success" && (
               <>
                 <div className="h-20 w-20 rounded-full bg-red-300"></div>
