@@ -57,6 +57,7 @@ export const userProfileSlice = createSlice({
       })
       .addCase(fetchProfile.pending, (state, action) => {
         state.status = "loading";
+        state.profile = null;
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.status = "success";
@@ -70,9 +71,11 @@ export const userProfileSlice = createSlice({
       })
       .addCase(login.pending, (state, action) => {
         state.status = "loading";
+        state.profile = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "idle";
+        state.profile = null;
       });
   },
 });

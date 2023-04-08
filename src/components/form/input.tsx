@@ -11,7 +11,7 @@ interface Props
 
 const Input: React.FC<Props> = ({ className, textLabel, ...rest }) => {
   return (
-    <label className="group relative flex flex-col rounded-md border group-focus:border-slate-900">
+    <label className="group relative flex flex-col w-full rounded-md border group-focus:border-slate-900">
       <input
         {...rest}
         className={twMerge(

@@ -25,11 +25,7 @@ export const fetchLeaderboard = createAsyncThunk(
 export const leaderboardSlice = createSlice({
   name: "LEADERBOARD",
   initialState,
-  reducers: {
-    setAllThreads: (state, action) => {
-      state.leaderboard = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchLeaderboard.pending, (state, action) => {
@@ -45,7 +41,5 @@ export const leaderboardSlice = createSlice({
       });
   },
 });
-
-// export const { getAll } = leaderboardSlice.actions;
 
 export default leaderboardSlice.reducer;

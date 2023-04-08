@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import allThreadSlice from "@states/thread/AllThreadSlice";
+import allThreadSlice from "@states/thread/ThreadSlice";
 import userProfileSlice from "@states/user/ProfileSlice";
 import leaderboardSlice from "@states/leaderboard/LeaderboardSlice";
 

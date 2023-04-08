@@ -94,6 +94,7 @@ function App() {
       {displayModal == "login" && (
         <Login onSubmit={onLogin} onHide={() => setDisplayModal("none")} />
       )}
+
       <main className="flex">
         <article className="w-3/4 py-6 pr-8">
           <Route path="/leaderboard">
