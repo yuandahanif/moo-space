@@ -1,14 +1,58 @@
+import Button from "@components/form/button";
+import Input from "@components/form/input";
+import useInput from "@hooks/useInput";
+
 const Register = () => {
+  const [email, setEmailOnChange] = useInput();
+  const [name, setNameOnChange] = useInput();
+  const [password, setPasswordOnChange] = useInput();
   return (
     <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex w-full flex-col items-center justify-center gap-4 bg-slate-600 bg-opacity-10 py-6">
-      <div className="bg-white p-8">
-        <label className="relative flex flex-col rounded-md border group group-focus:border-slate-900">
-          <span className="absolute ml-2 px-1 -translate-y-1/2 bg-white">Email</span>
-          <input
-            type="text"
-            className="min-w-[20em] rounded-md px-2 py-2"
+      <div className="flex flex-col gap-y-5 rounded-lg bg-white p-8">
+        <div className=" mb-8 flex flex-col items-center justify-start gap-y-5">
+          <h2 className="text-center text-2xl font-semibold">
+            Daftar MOO Space
+          </h2>
+          <div aria-label="Forum sepi, eh sapi moo . . ." className="h-20 w-20">
+            <img
+              src="/canvas.svg"
+              alt="canvas logo"
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <Input
+          required
+          textLabel="Email"
+          type="email"
+          value={email}
+          onChange={setEmailOnChange}
+        />
+        <Input
+          required
+          textLabel="Nama"
+          type="text"
+          value={name}
+          onChange={setNameOnChange}
+        />
+
+        <div className="flex flex-col gap-y-2">
+          <Input
+            required
+            textLabel="Password"
+            type="password"
+            value={password}
+            onChange={setPasswordOnChange}
           />
-        </label>
+
+          <span className="text-sm ml-auto">
+            Sudah punya akun? <button>Masuk</button>
+          </span>
+        </div>
+
+        <Button type="submit" className="bg-green-500 py-3 text-white">
+          Daftar
+        </Button>
       </div>
     </div>
   );
