@@ -1,11 +1,14 @@
+import Login from "@components/auth/login";
 import Register from "@components/auth/register";
 import Loading from "@components/loading/loading";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import MainLayout from "@layouts/main.layout";
 import LandingPage from "@pages/landing/landing";
 import LeaderboardPage from "@pages/leaderboard/leaderboard";
-import { fetchProfile } from "@states/user/ProfileSlice";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { fetchProfile, login } from "@states/user/ProfileSlice";
+import api from "@utils/api";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import { Route } from "wouter";
 
 type modalType = "login" | "register" | "none";
@@ -26,8 +29,41 @@ function App() {
     return returnCategory;
   }, [threads]);
 
-  const openModal = (name: modalType) => {
-    setDisplayModal(name);
+  const onRegister = async ({
+    email,
+    name,
+    password,
+  }: {
+    email: string;
+    name: string;
+    password: string;
+  }) => {
+    try {
+      await api.register({ email, name, password });
+      toast("Pendaftaran berhasil!", { pauseOnHover: true });
+      setDisplayModal("none");
+    } catch (error) {
+      console.error(error);
+      toast("Pendaftaran gagal!", { pauseOnHover: true });
+    }
+  };
+
+  const onLogin = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    try {
+      dispatch(login({ email, password }));
+      dispatch(fetchProfile());
+      toast("Masuk berhasil!", { pauseOnHover: true });
+      setDisplayModal("none");
+    } catch (error) {
+      console.error(error);
+      toast("Masuk gagal!", { pauseOnHover: true });
+    }
   };
 
   useEffect(() => {
@@ -37,7 +73,13 @@ function App() {
   return (
     <MainLayout>
       {displayModal == "register" && (
-        <Register onHide={() => setDisplayModal("none")} />
+        <Register
+          onSubmit={onRegister}
+          onHide={() => setDisplayModal("none")}
+        />
+      )}
+      {displayModal == "login" && (
+        <Login onSubmit={onLogin} onHide={() => setDisplayModal("none")} />
       )}
       <main className="flex">
         <article className="w-3/4 py-6 pr-8">
@@ -58,7 +100,7 @@ function App() {
                 <div>
                   <button
                     onClick={() => {
-                      openModal("login");
+                      setDisplayModal("login");
                     }}
                   >
                     Masuk
@@ -66,7 +108,7 @@ function App() {
                   atau{" "}
                   <button
                     onClick={() => {
-                      openModal("register");
+                      setDisplayModal("register");
                     }}
                   >
                     Daftar
@@ -80,7 +122,7 @@ function App() {
               <>
                 <div className="h-20 w-20 rounded-full bg-red-300"></div>
                 <span>{profile.profile?.name}</span>
-                <span>{profile.profile?.name}</span>
+                <span>{profile.profile?.email}</span>
               </>
             )}
           </div>

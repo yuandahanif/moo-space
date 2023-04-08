@@ -16,6 +16,9 @@ dependencies:
   react-redux:
     specifier: ^8.0.5
     version: 8.0.5(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
+  react-toastify:
+    specifier: ^9.1.2
+    version: 9.1.2(react-dom@18.2.0)(react@18.2.0)
   tailwind-merge:
     specifier: ^1.12.0
     version: 1.12.0
@@ -553,6 +556,11 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
+  /clsx@1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
+
   /color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
@@ -1046,6 +1054,17 @@ packages:
       react-is: 18.2.0
       redux: 4.2.1
       use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /react-toastify@9.1.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PBfzXO5jMGEtdYR5jxrORlNZZe/EuOkwvwKijMatsZZm8IZwLj01YvobeJYNjFcA6uy6CVrx2fzL9GWbhWPTDA==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      clsx: 1.2.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:

@@ -7,20 +7,11 @@ import React, { useRef } from "react";
 interface Props {
   onHide?: () => void;
   onOpen?: () => void;
-  onSubmit?: ({
-    email,
-    name,
-    password,
-  }: {
-    email: string;
-    name: string;
-    password: string;
-  }) => void;
+  onSubmit?: ({ email, password }: { email: string; password: string }) => void;
 }
 
-const Register: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
+const Login: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
   const [email, setEmailOnChange] = useInput();
-  const [name, setNameOnChange] = useInput();
   const [password, setPasswordOnChange] = useInput();
 
   const registerRef = useRef<null | HTMLFormElement>(null);
@@ -33,7 +24,6 @@ const Register: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
     if (onSubmit)
       onSubmit({
         email,
-        name,
         password,
       });
   };
@@ -47,7 +37,7 @@ const Register: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
       >
         <div className=" mb-8 flex flex-col items-center justify-start gap-y-5">
           <h2 className="text-center text-2xl font-semibold">
-            Daftar MOO Space
+            Masuk MOO Space
           </h2>
           <div aria-label="Forum sepi, eh sapi moo . . ." className="h-20 w-20">
             <img
@@ -64,13 +54,6 @@ const Register: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
           value={email}
           onChange={setEmailOnChange}
         />
-        <Input
-          required
-          textLabel="Nama"
-          type="text"
-          value={name}
-          onChange={setNameOnChange}
-        />
 
         <div className="flex flex-col gap-y-2">
           <Input
@@ -83,11 +66,11 @@ const Register: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
         </div>
 
         <Button type="submit" className="bg-green-500 py-3 text-white">
-          Daftar
+          Masuk
         </Button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default Login;

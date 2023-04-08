@@ -22,6 +22,22 @@ export const fetchProfile = createAsyncThunk("user/ownProfile", async () => {
   }
 });
 
+export const login = createAsyncThunk(
+  "user/login",
+  async ({ email, password }: { email: string; password: string }) => {
+    try {
+      const token = await api.login({ email, password });
+      if (token == null) {
+        throw new Error("failed to get profile.");
+      }
+      api.putAccessToken(token);
+      return token;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const userProfileSlice = createSlice({
   name: "PROFILE",
   initialState,
@@ -42,6 +58,19 @@ export const userProfileSlice = createSlice({
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.status = "success";
         state.profile = action.payload;
+      });
+
+    builder
+      .addCase(login.rejected, (state, action) => {
+        state.status = "error";
+        state.profile = null;
+      })
+      .addCase(login.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.status = "success";
+        // state.profile = ;
       });
   },
 });
