@@ -1,11 +1,12 @@
 import Login from "@components/auth/login";
 import Register from "@components/auth/register";
+import ProfileCard from "@components/card/profile.card";
 import Loading from "@components/loading/loading";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import MainLayout from "@layouts/main.layout";
 import LandingPage from "@pages/landing/landing";
 import LeaderboardPage from "@pages/leaderboard/leaderboard";
-import { fetchProfile, login } from "@states/user/ProfileSlice";
+import { fetchProfile, login, removeProfile } from "@states/user/ProfileSlice";
 import api from "@utils/api";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
@@ -56,13 +57,25 @@ function App() {
     password: string;
   }) => {
     try {
-      dispatch(login({ email, password }));
-      dispatch(fetchProfile());
+      await dispatch(login({ email, password }));
       toast("Masuk berhasil!", { pauseOnHover: true });
+      await dispatch(fetchProfile());
       setDisplayModal("none");
     } catch (error) {
       console.error(error);
       toast("Masuk gagal!", { pauseOnHover: true });
+    }
+  };
+
+  const onLogout = async () => {
+    try {
+      dispatch(removeProfile());
+      toast("Keluar berhasil!", { pauseOnHover: true });
+      await dispatch(fetchProfile());
+      setDisplayModal("none");
+    } catch (error) {
+      console.error(error);
+      toast("Keluar gagal!", { pauseOnHover: true });
     }
   };
 
@@ -118,12 +131,8 @@ function App() {
               </>
             )}
 
-            {profile.status == "success" && (
-              <>
-                <div className="h-20 w-20 rounded-full bg-red-300"></div>
-                <span>{profile.profile?.name}</span>
-                <span>{profile.profile?.email}</span>
-              </>
+            {profile.status == "success" && profile.profile && (
+              <ProfileCard onLogout={onLogout} profile={profile.profile} />
             )}
           </div>
 

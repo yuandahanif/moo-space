@@ -25,6 +25,10 @@ const api = (() => {
     return localStorage.getItem("accessToken");
   }
 
+  function removeAccessToken() {
+    return localStorage.removeItem("accessToken");
+  }
+
   async function register({
     email,
     name,
@@ -301,6 +305,7 @@ const api = (() => {
     getThreadDetail,
     createComment,
     getLeaderboard,
+    removeAccessToken,
   };
 })();
 

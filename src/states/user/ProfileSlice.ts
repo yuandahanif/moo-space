@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
     try {
       const token = await api.login({ email, password });
       if (token == null) {
-        throw new Error("failed to get profile.");
+        throw new Error("failed to login.");
       }
       api.putAccessToken(token);
       return token;
@@ -42,10 +42,13 @@ export const userProfileSlice = createSlice({
   name: "PROFILE",
   initialState,
   reducers: {
-    setAllThreads: (state, action) => {
-      state.profile = action.payload;
+    removeProfile: (state) => {
+      state.status = "idle";
+      state.profile = null;
+      api.removeAccessToken();
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.rejected, (state, action) => {
@@ -69,12 +72,11 @@ export const userProfileSlice = createSlice({
         state.status = "loading";
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.status = "success";
-        // state.profile = ;
+        state.status = "idle";
       });
   },
 });
 
-// export const { getAll } = userProfileSlice.actions;
+export const { removeProfile } = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;
