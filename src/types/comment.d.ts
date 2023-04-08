@@ -1,4 +1,4 @@
-type Comment = {
+type Comment_ = {
   id: string;
   content: string;
   createdAt: string;

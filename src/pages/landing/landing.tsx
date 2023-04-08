@@ -9,16 +9,19 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const LandingPage = () => {
+  const dispatch = useAppDispatch();
   const threads = useAppSelector((state) => state.thread);
   const profile = useAppSelector((state) => state.profile);
-  const dispatch = useAppDispatch();
 
-  const [title, setTitleOnChange] = useInput();
-  const [content, setContentOnChange] = useInput();
-  const [category, setCategoryOnChange] = useInput();
+  const [title, setTitleOnChange, setTitle] = useInput();
+  const [content, _, setContent] = useInput();
+  const [category, setCategoryOnChange, setCategory] = useInput();
 
   const onCreateThread = async () => {
     try {
+      if (title == "") return toast.error("judul tidak boleh kosong.");
+      if (content == "") return toast.error("Konten tidak boleh kosong.");
+
       await dispatch(
         createThread({
           body: content,
@@ -26,11 +29,16 @@ const LandingPage = () => {
           title: title,
         })
       );
-      toast("Berhasil membuat postingan.");
+
+      setTitle("");
+      setContent("");
+      setCategory("");
+
+      toast.success("Berhasil membuat postingan.");
     } catch (error) {
       console.error(error);
 
-      toast("Gagal membuat postingan.");
+      toast.error("Gagal membuat postingan.");
     }
   };
 
@@ -44,10 +52,19 @@ const LandingPage = () => {
         <div className="mb-8 flex items-end gap-x-4">
           <div className="flex w-full flex-col gap-4">
             <div className="flex w-full gap-6">
-              <Input textLabel="Judul" value={title} />
-              <Input textLabel="Kategori" />
+              <Input
+                textLabel="Judul"
+                value={title}
+                onChange={setTitleOnChange}
+              />
+              <Input
+                textLabel="Kategori"
+                value={category}
+                onChange={setCategoryOnChange}
+              />
             </div>
             <div
+              onInput={(e) => setContent(e.currentTarget.innerHTML)}
               contentEditable
               className="flex min-h-[100px] w-full rounded-lg border bg-white p-2 shadow-sm"
             />

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 
 interface Props {
   thread: Thread;
@@ -54,7 +55,13 @@ const ThreadCard: React.FC<Props> = ({ thread }) => {
           Diposting oleh
           <span className="ml-2 font-semibold">{thread.ownerId}</span>
         </div>
-        <span className="text-xl font-semibold">{thread.title}</span>
+
+        <div className="cursor-pointer hover:underline">
+          <Link href={`/detail/${thread.id}`}>
+            <span className="text-xl font-semibold">{thread.title}</span>
+          </Link>
+        </div>
+
         <div
           className="line-clamp-6"
           dangerouslySetInnerHTML={{ __html: thread.body }}

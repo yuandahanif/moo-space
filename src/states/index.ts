@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import allThreadSlice from "@states/thread/ThreadSlice";
 import userProfileSlice from "@states/user/ProfileSlice";
 import leaderboardSlice from "@states/leaderboard/LeaderboardSlice";
+import threadDetailSlice from "./thread/ThreadDetailSlice";
 
 const store = configureStore({
   reducer: {
     thread: allThreadSlice,
     profile: userProfileSlice,
     leaderboard: leaderboardSlice,
+    threadDetail: threadDetailSlice,
   },
 });
 

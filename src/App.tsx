@@ -4,6 +4,7 @@ import ProfileCard from "@components/card/profile.card";
 import Loading from "@components/loading/loading";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import MainLayout from "@layouts/main.layout";
+import DetailPage from "@pages/detail/detail";
 import LandingPage from "@pages/landing/landing";
 import LeaderboardPage from "@pages/leaderboard/leaderboard";
 import { fetchProfile, login, removeProfile } from "@states/user/ProfileSlice";
@@ -99,6 +100,10 @@ function App() {
         <article className="w-3/4 py-6 pr-8">
           <Route path="/leaderboard">
             <LeaderboardPage />
+          </Route>
+
+          <Route path="/detail/:id">
+            {(params) => <DetailPage id={String(params.id)} />}
           </Route>
 
           <Route path="/">

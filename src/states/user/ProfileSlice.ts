@@ -27,9 +27,11 @@ export const login = createAsyncThunk(
   async ({ email, password }: { email: string; password: string }) => {
     try {
       const token = await api.login({ email, password });
+
       if (token == null) {
         throw new Error("failed to login.");
       }
+
       api.putAccessToken(token);
       return token;
     } catch (error) {

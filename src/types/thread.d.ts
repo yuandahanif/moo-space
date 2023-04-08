@@ -10,9 +10,7 @@ type Thread = {
   totalComments: number;
 };
 
-type Thread_Detail =
-  | {
-      owner: User;
-      comments: Comment[];
-    }
-  | Thread;
+interface Thread_Detail extends Thread {
+  owner: User;
+  comments: Comment_[];
+}
