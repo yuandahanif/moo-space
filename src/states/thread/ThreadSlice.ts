@@ -43,10 +43,18 @@ export const threadSlice = createSlice({
   name: "THREADS",
   initialState,
   reducers: {
-    setAllThreads: (state, action) => {
-      state.threads = action.payload;
+    filterThreadsByCategory: (
+      state,
+      action: PayloadAction<{ category: string }>
+    ) => {
+      state.threads = [
+        ...state.threads.filter(
+          (thread) => thread.category === action.payload.category
+        ),
+      ];
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllThreads.pending, (state, action) => {

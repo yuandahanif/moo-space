@@ -5,17 +5,23 @@ import Loading from "@components/loading/loading";
 import useInput from "@hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { createThread, fetchAllThreads } from "@states/thread/ThreadSlice";
+import { fetchAllUsers } from "@states/user/UserSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const LandingPage = () => {
   const dispatch = useAppDispatch();
   const threads = useAppSelector((state) => state.thread);
+  const users = useAppSelector((state) => state.users);
   const profile = useAppSelector((state) => state.profile);
 
   const [title, setTitleOnChange, setTitle] = useInput();
   const [content, _, setContent] = useInput();
   const [category, setCategoryOnChange, setCategory] = useInput();
+
+  const getUserById = (id: string) => {
+    return users.all.find((user) => user.id === id);
+  };
 
   const onCreateThread = async () => {
     try {
@@ -43,6 +49,7 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchAllUsers());
     dispatch(fetchAllThreads());
   }, []);
 
@@ -97,10 +104,25 @@ const LandingPage = () => {
       </div>
 
       <div className="flex flex-col gap-y-4">
-        {threads.status == "error" && <Error />}
-        {threads.status == "loading" && <Loading />}
+        {threads.status == "error" || (users.status == "error" && <Error />)}
+        {threads.status == "loading" ||
+          (users.status == "loading" && <Loading />)}
         {threads.status == "success" &&
-          threads.threads.map((t) => <ThreadCard key={t.id} thread={t} />)}
+          users.status == "success" &&
+          threads.threads.map((t) => (
+            <ThreadCard
+              key={t.id}
+              thread={t}
+              user={
+                getUserById(t.ownerId) ?? {
+                  avatar: "",
+                  email: "",
+                  id: "",
+                  name: "",
+                }
+              }
+            />
+          ))}
       </div>
     </div>
   );

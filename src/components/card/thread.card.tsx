@@ -3,9 +3,10 @@ import { Link } from "wouter";
 
 interface Props {
   thread: Thread;
+  user: User;
 }
 
-const ThreadCard: React.FC<Props> = ({ thread }) => {
+const ThreadCard: React.FC<Props> = ({ thread, user }) => {
   return (
     <div className="flex w-full rounded-lg border bg-white shadow-sm duration-700 hover:shadow-md">
       <div className="flex flex-col items-center justify-start gap-2 p-5 pr-0">
@@ -53,7 +54,7 @@ const ThreadCard: React.FC<Props> = ({ thread }) => {
       <div className="p-5 ">
         <div className="inline-flex w-full text-sm">
           Diposting oleh
-          <span className="ml-2 font-semibold">{thread.ownerId}</span>
+          <span className="ml-2 font-semibold">{user.name}</span>
         </div>
 
         <div className="cursor-pointer hover:underline">

@@ -59,7 +59,7 @@ const DetailPage = ({ id }: Props) => {
         {thread.status == "loading" && <Loading />}
         {thread.status == "success" && (
           <div>
-            <h1 className="">{thread.thread?.title}</h1>
+            <h1 className="text-2xl font-semibold mb-4">{thread.thread?.title}</h1>
 
             <div
               className=""

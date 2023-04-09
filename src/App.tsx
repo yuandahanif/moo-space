@@ -26,6 +26,7 @@ function App() {
     const uniqueCategory = new Set(
       threads.threads.map((thread) => thread.category)
     );
+
     const returnCategory: string[] = [];
     uniqueCategory.forEach((category) => returnCategory.push(category));
     return returnCategory;
