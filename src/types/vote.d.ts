@@ -4,3 +4,5 @@ type Vote = {
   threadId: string;
   voteType: 0 | 1 | -1;
 };
+
+type Vote_type = "up" | "down" | "netural";

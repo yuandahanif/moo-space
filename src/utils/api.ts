@@ -251,8 +251,24 @@ const api = (() => {
     return comment;
   }
 
-  async function toggleLikeTalk(id: string) {
-    const response = await _fetchWithAuth(`${BASE_URL}/talks/likes`, {
+  async function voteThread(id: string, type: Vote_type) {
+    let url = `${BASE_URL}/threads/`;
+
+    switch (type) {
+      case "down":
+        url += `${id}/down-vote`;
+        break;
+      case "netural":
+        url += `${id}/neutral-vote`;
+        break;
+      case "up":
+        url += `${id}/up-vote`;
+        break;
+      default:
+        break;
+    }
+
+    const response = await _fetchWithAuth(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -262,13 +278,21 @@ const api = (() => {
       }),
     });
 
-    const responseJson = await response.json();
+    const responseJson = (await response.json()) as API_Wrapper<{
+      vote: Vote;
+    }>;
 
     const { status, message } = responseJson;
 
     if (status !== "success") {
       throw new Error(message);
     }
+
+    const {
+      data: { vote },
+    } = responseJson;
+
+    return vote;
   }
 
   // TODO: vote
@@ -301,7 +325,7 @@ const api = (() => {
     getAllUsers,
     getAllThreads,
     createThreads,
-    toggleLikeTalk,
+    voteThread,
     getThreadDetail,
     createComment,
     getLeaderboard,

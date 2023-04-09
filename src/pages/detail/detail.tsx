@@ -10,6 +10,7 @@ import { postedAt } from "@utils/index";
 import UpvoteButton from "@components/button/upvote.button";
 import DownVoteButton from "@components/button/downvote.button";
 import { createComment } from "@states/comment/CommentSlice";
+import { voteThread } from "@states/thread/ThreadSlice";
 
 interface Props {
   id: string;
@@ -42,6 +43,16 @@ const DetailPage = ({ id }: Props) => {
       console.error(error);
 
       toast.error("Gagal membuat komentar.");
+    }
+  };
+
+  const onVote = async (type: Vote_type) => {
+    if (thread.thread?.id) {
+      await dispatch(voteThread({ id: thread.thread?.id, type }));
+      await dispatch(fetchThreadDetail(id));
+      toast.success("Berhasil melaukan vote");
+    } else {
+      toast.error("Gagal melaukan vote");
     }
   };
 
@@ -82,8 +93,20 @@ const DetailPage = ({ id }: Props) => {
       {profile.profile?.id && thread?.thread != null ? (
         <div className="mb-8 flex items-end gap-x-4">
           <div className="flex flex-col items-center justify-start gap-2 pr-0">
-            <UpvoteButton />
-            <DownVoteButton />
+            <UpvoteButton
+              onClick={() => onVote("up")}
+              disabled={
+                thread.thread.upVotesBy.find((t) => t == profile.profile?.id) !=
+                undefined
+              }
+            />
+            <DownVoteButton
+              onClick={() => onVote("down")}
+              disabled={
+                thread.thread.downVotesBy.find((t) => t == profile.profile?.id) !=
+                undefined
+              }
+            />
 
             <div>
               <span>

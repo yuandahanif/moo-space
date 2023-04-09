@@ -39,6 +39,18 @@ export const createThread = createAsyncThunk(
   }
 );
 
+export const voteThread = createAsyncThunk(
+  "threads/vote",
+  async ({ id, type }: { id: string; type: Vote_type }) => {
+    try {
+      const threads = await api.voteThread(id, type);
+      return threads;
+    } catch (error) {
+      throw new Error("error creating threads");
+    }
+  }
+);
+
 export const threadSlice = createSlice({
   name: "THREADS",
   initialState,

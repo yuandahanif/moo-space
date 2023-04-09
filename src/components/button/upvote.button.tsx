@@ -4,9 +4,9 @@ interface Props
     HTMLButtonElement
   > {}
 
-const UpvoteButton: React.FC<Props> = () => {
+const UpvoteButton: React.FC<Props> = ({ ...rest }) => {
   return (
-    <button className="duration-300 hover:text-sky-300">
+    <button className="duration-300 hover:text-sky-300 disabled:text-sky-300" {...rest}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
