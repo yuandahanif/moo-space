@@ -6,10 +6,11 @@ import useInput from "@hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { createThread, fetchAllThreads } from "@states/thread/ThreadSlice";
 import { fetchAllUsers } from "@states/user/UserSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
 const LandingPage = () => {
+  const commentFieldRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const threads = useAppSelector((state) => state.thread);
   const users = useAppSelector((state) => state.users);
@@ -37,8 +38,12 @@ const LandingPage = () => {
       );
 
       setTitle("");
-      setContent("");
       setCategory("");
+
+      if (commentFieldRef.current) {
+        commentFieldRef.current.innerHTML = "";
+        setContent("");
+      }
 
       toast.success("Berhasil membuat postingan.");
     } catch (error) {
@@ -71,6 +76,7 @@ const LandingPage = () => {
               />
             </div>
             <div
+              ref={commentFieldRef}
               onInput={(e) => setContent(e.currentTarget.innerHTML)}
               contentEditable
               className="flex min-h-[100px] w-full rounded-lg border bg-white p-2 shadow-sm"

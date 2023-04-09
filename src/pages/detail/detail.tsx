@@ -3,7 +3,7 @@ import Loading from "@components/loading/loading";
 import useInput from "@hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { fetchThreadDetail } from "@states/thread/ThreadDetailSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
 import { postedAt } from "@utils/index";
@@ -16,6 +16,7 @@ interface Props {
 }
 
 const DetailPage = ({ id }: Props) => {
+  const commentFieldRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const thread = useAppSelector((state) => state.threadDetail);
   const profile = useAppSelector((state) => state.profile);
@@ -29,7 +30,11 @@ const DetailPage = ({ id }: Props) => {
 
       await dispatch(createComment({ content, id: thread.thread?.id }));
 
-      setContent("");
+      if (commentFieldRef.current) {
+        commentFieldRef.current.innerHTML = "";
+        setContent("");
+      }
+
       dispatch(fetchThreadDetail(id));
 
       toast.success("Berhasil membuat komentar.");
@@ -93,6 +98,7 @@ const DetailPage = ({ id }: Props) => {
           <div className="flex w-full flex-col gap-4">
             <div className="flex w-full gap-6"></div>
             <div
+              ref={commentFieldRef}
               contentEditable
               onInput={(e) => setContent(e.currentTarget.innerHTML)}
               className="flex min-h-[100px] w-full rounded-lg border bg-white p-2 shadow-sm"
