@@ -21,8 +21,16 @@ const LeaderboardPage = () => {
 
         {data.status == "success" &&
           data.leaderboard.map((t) => (
-            <div key={t.user.id} className="border p-3 flex">
-              <span className="mr-auto">{t.user.name}</span><span>{t.score}</span>
+            <div key={t.user.id} className="flex border p-3">
+              <img
+                src={t.user.avatar}
+                alt={t.user.name}
+                className="h-10 w-10 rounded-full"
+              />
+              <div className="ml-2 flex w-full items-center justify-between gap-y-2">
+                <span className="font-bold">{t.user.name}</span>
+                <span className="text-sm">{t.score}</span>
+              </div>
             </div>
           ))}
       </div>
