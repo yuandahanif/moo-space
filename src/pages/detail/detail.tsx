@@ -1,13 +1,12 @@
-import ThreadCard from "@components/card/thread.card";
 import Error from "@components/error/error";
-import Input from "@components/form/input";
 import Loading from "@components/loading/loading";
 import useInput from "@hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { fetchThreadDetail } from "@states/thread/ThreadDetailSlice";
-import { createThread } from "@states/thread/ThreadSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+
+import { postedAt } from "@utils/index";
 
 interface Props {
   id: string;
@@ -17,28 +16,17 @@ const DetailPage = ({ id }: Props) => {
   const dispatch = useAppDispatch();
   const thread = useAppSelector((state) => state.threadDetail);
   const profile = useAppSelector((state) => state.profile);
-  console.log("file: detail.tsx:19 ~ DetailPage ~ thread:", thread);
 
-  const [title, setTitleOnChange, setTitle] = useInput();
   const [content, _, setContent] = useInput();
-  const [category, setCategoryOnChange, setCategory] = useInput();
-
   const onCreateThread = async () => {
     try {
-      if (title == "") return toast.error("judul tidak boleh kosong.");
       if (content == "") return toast.error("Konten tidak boleh kosong.");
 
-      await dispatch(
-        createThread({
-          body: content,
-          category: category,
-          title: title,
-        })
-      );
+      // await dispatch(
 
-      setTitle("");
+      // );
+
       setContent("");
-      setCategory("");
 
       toast.success("Berhasil membuat postingan.");
     } catch (error) {
@@ -59,7 +47,9 @@ const DetailPage = ({ id }: Props) => {
         {thread.status == "loading" && <Loading />}
         {thread.status == "success" && (
           <div>
-            <h1 className="text-2xl font-semibold mb-4">{thread.thread?.title}</h1>
+            <h1 className="mb-4 text-2xl font-semibold">
+              {thread.thread?.title}
+            </h1>
 
             <div
               className=""
@@ -67,6 +57,12 @@ const DetailPage = ({ id }: Props) => {
             />
           </div>
         )}
+      </div>
+
+      <div className="flex border-b-2 pb-4">
+        <span className="ml-auto text-sm">
+          {postedAt(thread.thread?.createdAt ?? new Date().toString())}
+        </span>
       </div>
 
       {profile.profile?.id && thread?.thread != null ? (
@@ -150,6 +146,43 @@ const DetailPage = ({ id }: Props) => {
           <span>Masuk untuk berinteraksi.</span>
         </div>
       )}
+
+      <div className="flex flex-col gap-4 border-t-2 pt-4">
+        <span className="font-semibold">
+          Komentar ({thread.thread?.comments.length})
+        </span>
+        <div>
+          {thread.thread?.comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="flex flex-col rounded-md border p-3"
+            >
+              <div className="mb-6  flex items-center gap-x-3">
+                <div
+                  aria-label="Forum sepi, eh sapi moo . . ."
+                  className="h-8 w-8 overflow-hidden rounded-full"
+                >
+                  <img
+                    src={thread.thread?.owner.avatar}
+                    alt={thread.thread?.owner.name}
+                    className="object-contain hover:cursor-pointer"
+                  />
+                </div>
+
+                <span>{comment.owner.name}</span>
+              </div>
+
+              <div dangerouslySetInnerHTML={{ __html: comment.content }}></div>
+
+              <div className="flex">
+                <span className="ml-auto text-sm">
+                  {postedAt(comment.createdAt)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

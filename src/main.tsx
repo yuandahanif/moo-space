@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <React.StrictMode>
       <App />
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" autoClose={2000} />
     </React.StrictMode>
   </Provider>
 );

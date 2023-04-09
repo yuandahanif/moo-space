@@ -119,6 +119,7 @@ function App() {
               <>
                 <div>
                   <button
+                    className="hover:underline"
                     onClick={() => {
                       setDisplayModal("login");
                     }}
@@ -127,6 +128,7 @@ function App() {
                   </button>{" "}
                   atau{" "}
                   <button
+                    className="hover:underline"
                     onClick={() => {
                       setDisplayModal("register");
                     }}
