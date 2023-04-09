@@ -71,7 +71,7 @@ const DetailPage = ({ id }: Props) => {
 
   useEffect(() => {
     void dispatch(fetchThreadDetail(id));
-  }, []);
+  }, [id]);
 
   return (
     <div className="grow">

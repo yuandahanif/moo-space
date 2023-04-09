@@ -25,6 +25,11 @@
       "@states/*": ["./src/states/*"]
     }
   },
-  "include": ["src", "prettier.config.cjs"],
+  "include": [
+    "src",
+    "prettier.config.cjs",
+    "postcss.config.js",
+    ".eslintrc.cjs"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
