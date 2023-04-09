@@ -106,4 +106,6 @@ export const threadSlice = createSlice({
   },
 });
 
+export const { filterThreadsByCategory } = threadSlice.actions;
+
 export default threadSlice.reducer;

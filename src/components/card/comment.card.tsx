@@ -34,18 +34,22 @@ const CommentCard: React.FC<Props> = ({
 
       <div className="flex gap-5">
         <div className="flex flex-col items-center justify-start gap-2 pr-0">
-          <UpvoteButton
-            onClick={() => onUpvote(comment)}
-            disabled={
-              comment.upVotesBy.find((t) => t == profile_id) != undefined
-            }
-          />
-          <DownVoteButton
-            onClick={() => onDownvote(comment)}
-            disabled={
-              comment.downVotesBy.find((t) => t == profile_id) != undefined
-            }
-          />
+          {profile_id != "" && (
+            <>
+              <UpvoteButton
+                onClick={() => onUpvote(comment)}
+                disabled={
+                  comment.upVotesBy.find((t) => t == profile_id) != undefined
+                }
+              />
+              <DownVoteButton
+                onClick={() => onDownvote(comment)}
+                disabled={
+                  comment.downVotesBy.find((t) => t == profile_id) != undefined
+                }
+              />
+            </>
+          )}
 
           <div>
             <span>

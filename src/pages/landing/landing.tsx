@@ -6,10 +6,14 @@ import useInput from "@hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { createThread, fetchAllThreads } from "@states/thread/ThreadSlice";
 import { fetchAllUsers } from "@states/user/UserSlice";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { toast } from "react-toastify";
 
-const LandingPage = () => {
+interface Props {
+  categoryFilter: string;
+}
+
+const LandingPage: React.FC<Props> = ({ categoryFilter = "" }) => {
   const commentFieldRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const threads = useAppSelector((state) => state.thread);
@@ -19,6 +23,17 @@ const LandingPage = () => {
   const [title, setTitleOnChange, setTitle] = useInput();
   const [content, _, setContent] = useInput();
   const [category, setCategoryOnChange, setCategory] = useInput();
+
+  const threadsMemo = useMemo(() => {
+    if (categoryFilter == "") {
+      return threads.threads;
+    }
+
+    const newThreads = threads.threads.filter(
+      (thread) => thread.category == categoryFilter
+    );
+    return newThreads;
+  }, [categoryFilter, threads]);
 
   const getUserById = (id: string) => {
     return users.all.find((user) => user.id === id);
@@ -115,7 +130,7 @@ const LandingPage = () => {
           (users.status == "loading" && <Loading />)}
         {threads.status == "success" &&
           users.status == "success" &&
-          threads.threads.map((t) => (
+          threadsMemo.map((t) => (
             <ThreadCard
               key={t.id}
               thread={t}

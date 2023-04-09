@@ -7,6 +7,7 @@ import MainLayout from "@layouts/main.layout";
 import DetailPage from "@pages/detail/detail";
 import LandingPage from "@pages/landing/landing";
 import LeaderboardPage from "@pages/leaderboard/leaderboard";
+import { filterThreadsByCategory } from "@states/thread/ThreadSlice";
 import { fetchProfile, login, removeProfile } from "@states/user/ProfileSlice";
 import api from "@utils/api";
 import { useEffect, useMemo, useState } from "react";
@@ -16,6 +17,7 @@ import { Route } from "wouter";
 type modalType = "login" | "register" | "none";
 function App() {
   const [displayModal, setDisplayModal] = useState<modalType>("none");
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   const threads = useAppSelector((state) => state.thread);
   const profile = useAppSelector((state) => state.profile);
@@ -108,7 +110,7 @@ function App() {
           </Route>
 
           <Route path="/">
-            <LandingPage />
+            <LandingPage categoryFilter={categoryFilter} />
           </Route>
         </article>
 
@@ -148,12 +150,18 @@ function App() {
           <div className="flex  flex-wrap items-start gap-2 rounded-lg border bg-white px-4 py-4 shadow-sm">
             <span className="inline-flex w-full">Kategori</span>
             {threadSetMemo.map((value) => (
-              <span
+              <button
                 key={value}
-                className="rounded-full bg-slate-400 p-1 px-2 text-white"
+                onClick={() => {
+                  setCategoryFilter((state) =>
+                    state == "" ? value : state == value ? "" : value
+                  );
+                }}
               >
-                #{value}
-              </span>
+                <span className="rounded-full bg-slate-400 p-1 px-2 text-white">
+                  #{value}
+                </span>
+              </button>
             ))}
           </div>
         </aside>
