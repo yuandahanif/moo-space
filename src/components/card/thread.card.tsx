@@ -1,12 +1,14 @@
+import { postedAt } from "@utils/index";
 import React from "react";
 import { Link } from "wouter";
 
 interface Props {
   thread: Thread;
   user: User;
+  allowVote?: boolean;
 }
 
-const ThreadCard: React.FC<Props> = ({ thread, user }) => {
+const ThreadCard: React.FC<Props> = ({ thread, user, allowVote = false }) => {
   return (
     <div className="flex w-full rounded-lg border bg-white shadow-sm duration-700 hover:shadow-md">
       <div className="flex flex-col items-center justify-start gap-2 p-5 pr-0">
@@ -52,9 +54,14 @@ const ThreadCard: React.FC<Props> = ({ thread, user }) => {
       </div>
 
       <div className="p-5 ">
-        <div className="inline-flex w-full text-sm">
+        <div className="inline-flex w-full gap-1 text-sm">
           Diposting oleh
-          <span className="ml-2 font-semibold">{user.name}</span>
+          <span className="font-semibold">{user.name}</span> |{" "}
+          <div className="flex">
+            <span className="ml-auto text-sm">
+              {postedAt(thread.createdAt)}
+            </span>
+          </div>
         </div>
 
         <div className="cursor-pointer hover:underline">

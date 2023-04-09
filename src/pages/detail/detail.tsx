@@ -52,15 +52,20 @@ const DetailPage = ({ id }: Props) => {
             </h1>
 
             <div
-              className=""
               dangerouslySetInnerHTML={{ __html: thread.thread?.body ?? "" }}
             />
           </div>
         )}
       </div>
 
-      <div className="flex border-b-2 pb-4">
-        <span className="ml-auto text-sm">
+      <div className="flex gap-2 border-b-2 pb-4 text-sm">
+        <span className="ml-auto">Dibuat oleh {thread.thread?.owner.name}</span>
+        <img
+          className="h-5 w-5 overflow-hidden rounded-full object-cover object-center"
+          src={thread.thread?.owner.avatar}
+          alt={thread.thread?.owner.name}
+        />
+        <span>
           {postedAt(thread.thread?.createdAt ?? new Date().toString())}
         </span>
       </div>
