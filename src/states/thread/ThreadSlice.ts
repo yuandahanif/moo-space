@@ -69,14 +69,14 @@ export const threadSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllThreads.pending, (state, action) => {
+      .addCase(fetchAllThreads.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchAllThreads.fulfilled, (state, action) => {
         state.status = "success";
         state.threads = action.payload;
       })
-      .addCase(fetchAllThreads.rejected, (state, action) => {
+      .addCase(fetchAllThreads.rejected, (state) => {
         state.status = "error";
         state.threads = [];
       });
@@ -92,9 +92,18 @@ export const threadSlice = createSlice({
       .addCase(createThread.rejected, (state) => {
         state.status = "error";
       });
+
+    builder
+      .addCase(voteThread.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(voteThread.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(voteThread.rejected, (state) => {
+        state.status = "error";
+      });
   },
 });
-
-// export const { getAll } = threadSlice.actions;
 
 export default threadSlice.reducer;

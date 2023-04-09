@@ -9,8 +9,9 @@ import { toast } from "react-toastify";
 import { postedAt } from "@utils/index";
 import UpvoteButton from "@components/button/upvote.button";
 import DownVoteButton from "@components/button/downvote.button";
-import { createComment } from "@states/comment/CommentSlice";
+import { createComment, voteComment } from "@states/comment/CommentSlice";
 import { voteThread } from "@states/thread/ThreadSlice";
+import CommentCard from "@components/card/comment.card";
 
 interface Props {
   id: string;
@@ -49,6 +50,18 @@ const DetailPage = ({ id }: Props) => {
   const onVote = async (type: Vote_type) => {
     if (thread.thread?.id) {
       await dispatch(voteThread({ id: thread.thread?.id, type }));
+      await dispatch(fetchThreadDetail(id));
+      toast.success("Berhasil melaukan vote");
+    } else {
+      toast.error("Gagal melaukan vote");
+    }
+  };
+
+  const onCommentVote = async (comment_id: string, type: Vote_type) => {
+    if (thread.thread?.id) {
+      await dispatch(
+        voteComment({ id: thread.thread?.id, type, comment_id: comment_id })
+      );
       await dispatch(fetchThreadDetail(id));
       toast.success("Berhasil melaukan vote");
     } else {
@@ -103,8 +116,9 @@ const DetailPage = ({ id }: Props) => {
             <DownVoteButton
               onClick={() => onVote("down")}
               disabled={
-                thread.thread.downVotesBy.find((t) => t == profile.profile?.id) !=
-                undefined
+                thread.thread.downVotesBy.find(
+                  (t) => t == profile.profile?.id
+                ) != undefined
               }
             />
 
@@ -161,49 +175,13 @@ const DetailPage = ({ id }: Props) => {
 
         <div className="flex flex-col gap-4">
           {thread.thread?.comments.map((comment) => (
-            <div
+            <CommentCard
+              profile_id={profile.profile?.id || ""}
+              onUpvote={(c) => onCommentVote(c.id, "up")}
+              onDownvote={(c) => onCommentVote(c.id, "down")}
+              comment={comment}
               key={comment.id}
-              className="flex flex-col rounded-md border p-3"
-            >
-              <div className="mb-6  flex items-center gap-x-3">
-                <div
-                  aria-label="Forum sepi, eh sapi moo . . ."
-                  className="h-8 w-8 overflow-hidden rounded-full"
-                >
-                  <img
-                    src={thread.thread?.owner.avatar}
-                    alt={thread.thread?.owner.name}
-                    className="object-contain hover:cursor-pointer"
-                  />
-                </div>
-
-                <span>{comment.owner.name}</span>
-              </div>
-
-              <div className="flex gap-5">
-                <div className="flex flex-col items-center justify-start gap-2 pr-0">
-                  <UpvoteButton />
-                  <DownVoteButton />
-
-                  <div>
-                    <span>
-                      {Number(
-                        comment.upVotesBy?.length - comment.downVotesBy.length
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  dangerouslySetInnerHTML={{ __html: comment.content }}
-                ></div>
-              </div>
-
-              <div className="flex">
-                <span className="ml-auto text-sm">
-                  {postedAt(comment.createdAt)}
-                </span>
-              </div>
-            </div>
+            />
           ))}
         </div>
       </div>

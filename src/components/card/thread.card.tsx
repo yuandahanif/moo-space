@@ -14,8 +14,11 @@ const ThreadCard: React.FC<Props> = ({ thread, user, allowVote = false }) => {
   return (
     <div className="flex w-full rounded-lg border bg-white shadow-sm duration-700 hover:shadow-md">
       <div className="flex flex-col items-center justify-start gap-2 p-5 pr-0">
-        <UpvoteButton />
-        <DownVoteButton />
+        {Number(thread.upVotesBy.length - thread.downVotesBy.length) >= 0 ? (
+          <UpvoteButton className="cursor-default hover:text-black" />
+        ) : (
+          <DownVoteButton className="cursor-default hover:text-black" />
+        )}
 
         <div>
           <span>

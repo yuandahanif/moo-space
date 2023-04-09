@@ -273,9 +273,6 @@ const api = (() => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        talkId: id,
-      }),
     });
 
     const responseJson = (await response.json()) as API_Wrapper<{
@@ -294,8 +291,50 @@ const api = (() => {
 
     return vote;
   }
+  async function voteComment(
+    thread_id: string,
+    comment_id: string,
+    type: Vote_type
+  ) {
+    let url = `${BASE_URL}/threads/${thread_id}/comments/${comment_id}/`;
 
-  // TODO: vote
+    switch (type) {
+      case "down":
+        url += `down-vote`;
+        break;
+      case "netural":
+        url += `neutral-vote`;
+        break;
+      case "up":
+        url += `up-vote`;
+        break;
+      default:
+        break;
+    }
+
+    const response = await _fetchWithAuth(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = (await response.json()) as API_Wrapper<{
+      vote: Vote;
+    }>;
+
+    const { status, message } = responseJson;
+
+    if (status !== "success") {
+      throw new Error(message);
+    }
+
+    const {
+      data: { vote },
+    } = responseJson;
+
+    return vote;
+  }
 
   async function getLeaderboard() {
     const response = await fetch(`${BASE_URL}/leaderboards`);
@@ -321,6 +360,7 @@ const api = (() => {
     getAccessToken,
     register,
     login,
+    voteComment,
     getOwnProfile,
     getAllUsers,
     getAllThreads,

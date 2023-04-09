@@ -1,12 +1,20 @@
+import { twMerge } from "tailwind-merge";
+
 interface Props
   extends React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {}
 
-const UpvoteButton: React.FC<Props> = ({ ...rest }) => {
+const UpvoteButton: React.FC<Props> = ({ className, ...rest }) => {
   return (
-    <button className="duration-300 hover:text-sky-300 disabled:text-sky-300" {...rest}>
+    <button
+      className={twMerge(
+        "duration-300 hover:text-sky-300 disabled:text-sky-300",
+        className
+      )}
+      {...rest}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

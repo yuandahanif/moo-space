@@ -22,8 +22,28 @@ export const createComment = createAsyncThunk(
   }
 );
 
+export const voteComment = createAsyncThunk(
+  "comment/vote",
+  async ({
+    id,
+    type,
+    comment_id,
+  }: {
+    id: string;
+    type: Vote_type;
+    comment_id: string;
+  }) => {
+    try {
+      const threads = await api.voteComment(id, comment_id, type);
+      return threads;
+    } catch (error) {
+      throw new Error("error creating threads");
+    }
+  }
+);
+
 export const commentSlice = createSlice({
-  name: "THREADS",
+  name: "COMMENT",
   initialState,
   reducers: {},
 
@@ -37,6 +57,18 @@ export const commentSlice = createSlice({
         state.comments = [];
       })
       .addCase(createComment.rejected, (state) => {
+        state.status = "error";
+      });
+
+    builder
+      .addCase(voteComment.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(voteComment.fulfilled, (state) => {
+        state.status = "success";
+        state.comments = [];
+      })
+      .addCase(voteComment.rejected, (state) => {
         state.status = "error";
       });
   },
