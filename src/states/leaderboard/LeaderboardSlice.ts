@@ -28,14 +28,14 @@ export const leaderboardSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLeaderboard.pending, (state, action) => {
+      .addCase(fetchLeaderboard.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchLeaderboard.fulfilled, (state, action) => {
         state.status = "success";
         state.leaderboard = action.payload;
       })
-      .addCase(fetchLeaderboard.rejected, (state, action) => {
+      .addCase(fetchLeaderboard.rejected, (state) => {
         state.status = "error";
         state.leaderboard = [];
       });

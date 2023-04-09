@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@utils/api";
 
 // Define the initial state using that type

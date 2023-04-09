@@ -29,11 +29,11 @@ export const userProfileSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllUsers.rejected, (state, action) => {
+      .addCase(fetchAllUsers.rejected, (state) => {
         state.status = "error";
         state.all = [];
       })
-      .addCase(fetchAllUsers.pending, (state, action) => {
+      .addCase(fetchAllUsers.pending, (state) => {
         state.status = "loading";
         state.all = [];
       })

@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@utils/api";
 
 // Define the initial state using that type
@@ -52,7 +52,7 @@ export const commentSlice = createSlice({
       .addCase(createComment.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(createComment.fulfilled, (state, action) => {
+      .addCase(createComment.fulfilled, (state) => {
         state.status = "success";
         state.comments = [];
       })

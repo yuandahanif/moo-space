@@ -7,7 +7,6 @@ import MainLayout from "@layouts/main.layout";
 import DetailPage from "@pages/detail/detail";
 import LandingPage from "@pages/landing/landing";
 import LeaderboardPage from "@pages/leaderboard/leaderboard";
-import { filterThreadsByCategory } from "@states/thread/ThreadSlice";
 import { fetchProfile, login, removeProfile } from "@states/user/ProfileSlice";
 import api from "@utils/api";
 import { useEffect, useMemo, useState } from "react";
@@ -84,19 +83,22 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(fetchProfile());
+    void dispatch(fetchProfile());
   }, []);
 
   return (
     <MainLayout>
       {displayModal == "register" && (
         <Register
-          onSubmit={onRegister}
+          onSubmit={(e) => void onRegister(e)}
           onHide={() => setDisplayModal("none")}
         />
       )}
       {displayModal == "login" && (
-        <Login onSubmit={onLogin} onHide={() => setDisplayModal("none")} />
+        <Login
+          onSubmit={(e) => void onLogin(e)}
+          onHide={() => setDisplayModal("none")}
+        />
       )}
 
       <main className="flex">
@@ -143,7 +145,10 @@ function App() {
             )}
 
             {profile.status == "success" && profile.profile && (
-              <ProfileCard onLogout={onLogout} profile={profile.profile} />
+              <ProfileCard
+                onLogout={() => void onLogout()}
+                profile={profile.profile}
+              />
             )}
           </div>
 

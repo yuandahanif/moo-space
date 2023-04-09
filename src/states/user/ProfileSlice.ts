@@ -53,11 +53,11 @@ export const userProfileSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProfile.rejected, (state, action) => {
+      .addCase(fetchProfile.rejected, (state) => {
         state.status = "error";
         state.profile = null;
       })
-      .addCase(fetchProfile.pending, (state, action) => {
+      .addCase(fetchProfile.pending, (state) => {
         state.status = "loading";
         state.profile = null;
       })
@@ -67,15 +67,15 @@ export const userProfileSlice = createSlice({
       });
 
     builder
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state) => {
         state.status = "error";
         state.profile = null;
       })
-      .addCase(login.pending, (state, action) => {
+      .addCase(login.pending, (state) => {
         state.status = "loading";
         state.profile = null;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state) => {
         state.status = "idle";
         state.profile = null;
       });

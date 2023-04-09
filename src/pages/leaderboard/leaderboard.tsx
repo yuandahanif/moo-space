@@ -9,7 +9,7 @@ const LeaderboardPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchLeaderboard());
+    void dispatch(fetchLeaderboard());
   }, []);
 
   return (

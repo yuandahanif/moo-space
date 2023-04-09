@@ -37,7 +37,7 @@ const DetailPage = ({ id }: Props) => {
         setContent("");
       }
 
-      dispatch(fetchThreadDetail(id));
+      void dispatch(fetchThreadDetail(id));
 
       toast.success("Berhasil membuat komentar.");
     } catch (error) {
@@ -70,7 +70,7 @@ const DetailPage = ({ id }: Props) => {
   };
 
   useEffect(() => {
-    dispatch(fetchThreadDetail(id));
+    void dispatch(fetchThreadDetail(id));
   }, []);
 
   return (
@@ -107,14 +107,14 @@ const DetailPage = ({ id }: Props) => {
         <div className="mb-8 flex items-end gap-x-4">
           <div className="flex flex-col items-center justify-start gap-2 pr-0">
             <UpvoteButton
-              onClick={() => onVote("up")}
+              onClick={() => void onVote("up")}
               disabled={
                 thread.thread.upVotesBy.find((t) => t == profile.profile?.id) !=
                 undefined
               }
             />
             <DownVoteButton
-              onClick={() => onVote("down")}
+              onClick={() => void onVote("down")}
               disabled={
                 thread.thread.downVotesBy.find(
                   (t) => t == profile.profile?.id
@@ -143,7 +143,7 @@ const DetailPage = ({ id }: Props) => {
           </div>
 
           <button
-            onClick={onCreateComment}
+            onClick={() => void onCreateComment()}
             className="rounded-md bg-lime-300 p-4 text-white duration-200 hover:bg-lime-400"
           >
             <svg
@@ -177,8 +177,8 @@ const DetailPage = ({ id }: Props) => {
           {thread.thread?.comments.map((comment) => (
             <CommentCard
               profile_id={profile.profile?.id || ""}
-              onUpvote={(c) => onCommentVote(c.id, "up")}
-              onDownvote={(c) => onCommentVote(c.id, "down")}
+              onUpvote={(c) => void onCommentVote(c.id, "up")}
+              onDownvote={(c) => void onCommentVote(c.id, "down")}
               comment={comment}
               key={comment.id}
             />

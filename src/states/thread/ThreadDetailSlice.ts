@@ -28,14 +28,14 @@ export const threadSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchThreadDetail.pending, (state, action) => {
+      .addCase(fetchThreadDetail.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchThreadDetail.fulfilled, (state, action) => {
         state.status = "success";
         state.thread = action.payload;
       })
-      .addCase(fetchThreadDetail.rejected, (state, action) => {
+      .addCase(fetchThreadDetail.rejected, (state) => {
         state.status = "error";
         state.thread = null;
       });

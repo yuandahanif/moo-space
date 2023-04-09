@@ -10,7 +10,7 @@ interface Props {
   allowVote?: boolean;
 }
 
-const ThreadCard: React.FC<Props> = ({ thread, user, allowVote = false }) => {
+const ThreadCard: React.FC<Props> = ({ thread, user }) => {
   return (
     <div className="flex w-full rounded-lg border bg-white shadow-sm duration-700 hover:shadow-md">
       <div className="flex flex-col items-center justify-start gap-2 p-5 pr-0">

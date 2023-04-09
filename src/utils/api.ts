@@ -1,5 +1,5 @@
 const api = (() => {
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  const BASE_URL = import.meta.env.VITE_API_URL as string;
 
   async function _fetchWithAuth(url: string, options: RequestInit = {}) {
     const accessToken = getAccessToken();

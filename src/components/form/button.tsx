@@ -1,11 +1,10 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-interface Props
-  extends React.DetailedHTMLProps<
+type Props = React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
-  > {}
+  >
 
 const Button: React.FC<Props> = ({ children, className, ...rest }) => {
   return (

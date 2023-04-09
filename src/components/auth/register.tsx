@@ -18,7 +18,7 @@ interface Props {
   }) => void;
 }
 
-const Register: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
+const Register: React.FC<Props> = ({ onHide, onSubmit }) => {
   const [email, setEmailOnChange] = useInput();
   const [name, setNameOnChange] = useInput();
   const [password, setPasswordOnChange] = useInput();

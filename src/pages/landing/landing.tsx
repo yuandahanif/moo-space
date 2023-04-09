@@ -69,8 +69,8 @@ const LandingPage: React.FC<Props> = ({ categoryFilter = "" }) => {
   };
 
   useEffect(() => {
-    dispatch(fetchAllUsers());
-    dispatch(fetchAllThreads());
+    void dispatch(fetchAllUsers());
+    void dispatch(fetchAllThreads());
   }, []);
 
   return (
@@ -99,7 +99,7 @@ const LandingPage: React.FC<Props> = ({ categoryFilter = "" }) => {
           </div>
 
           <button
-            onClick={onCreateThread}
+            onClick={() => void onCreateThread()}
             className="rounded-md bg-lime-300 p-4 text-white duration-200 hover:bg-lime-400"
           >
             <svg
