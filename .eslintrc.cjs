@@ -23,6 +23,13 @@ const config = {
     "plugin:prettier/recommended",
   ],
   rules: {
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false,
+      },
+    ],
+    "no-void": ["error", { allowAsStatement: true }],
     eqeqeq: ["error", "smart"],
     "@typescript-eslint/naming-convention": [
       "warn",

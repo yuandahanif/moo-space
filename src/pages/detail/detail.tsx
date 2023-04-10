@@ -108,7 +108,7 @@ const DetailPage = ({ id }: Props): JSX.Element => {
         <div className="mb-8 flex items-end gap-x-4">
           <div className="flex flex-col items-center justify-start gap-2 pr-0">
             <UpvoteButton
-              onClick={() => async () => {
+              onClick={async () => {
                 await onVote("up");
               }}
               disabled={
@@ -118,7 +118,7 @@ const DetailPage = ({ id }: Props): JSX.Element => {
               }
             />
             <DownVoteButton
-              onClick={() => async () => {
+              onClick={async () => {
                 await onVote("down");
               }}
               disabled={
