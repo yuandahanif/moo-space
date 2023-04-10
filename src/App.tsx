@@ -60,13 +60,16 @@ function App(): JSX.Element {
     password: string;
   }): Promise<void> => {
     try {
-      await dispatch(login({ email, password }));
-      toast("Masuk berhasil!", { pauseOnHover: true });
-      await dispatch(fetchProfile());
+      const res = await dispatch(login({ email, password }));
+      if (res.payload === undefined) {
+        throw new Error("");
+      }
       setDisplayModal("none");
+      await dispatch(fetchProfile());
+      toast("Masuk berhasil!", { pauseOnHover: true });
     } catch (error) {
       console.error(error);
-      toast("Masuk gagal!", { pauseOnHover: true });
+      toast("Masuk gagal! email atau password salah!", { pauseOnHover: true });
     }
   };
 
@@ -90,9 +93,7 @@ function App(): JSX.Element {
     <MainLayout>
       {displayModal === "register" && (
         <Register
-          onSubmit={(e) => async () => {
-            await onRegister(e);
-          }}
+          onSubmit={onRegister}
           onHide={() => {
             setDisplayModal("none");
           }}
@@ -100,9 +101,7 @@ function App(): JSX.Element {
       )}
       {displayModal === "login" && (
         <Login
-          onSubmit={(e) => async () => {
-            await onLogin(e);
-          }}
+          onSubmit={onLogin}
           onHide={() => {
             setDisplayModal("none");
           }}
@@ -153,12 +152,7 @@ function App(): JSX.Element {
             )}
 
             {profile.status === "success" && profile.profile != null && (
-              <ProfileCard
-                onLogout={() => async () => {
-                  await onLogout();
-                }}
-                profile={profile.profile}
-              />
+              <ProfileCard onLogout={onLogout} profile={profile.profile} />
             )}
           </div>
 
