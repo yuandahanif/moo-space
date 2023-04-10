@@ -5,7 +5,7 @@ interface Props
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  onClick: () => Promise<void>;
+  onClick?: () => Promise<void>;
 }
 
 const UpvoteButton: React.FC<Props> = ({ className, ...rest }) => {

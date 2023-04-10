@@ -27,6 +27,7 @@
   },
   "include": [
     "src",
+    "./src/setupTest.ts",
     "prettier.config.cjs",
     "postcss.config.js",
     ".eslintrc.cjs"
