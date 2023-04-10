@@ -151,6 +151,8 @@ const DetailPage = ({ id }: Props): JSX.Element => {
           </div>
 
           <button
+            aria-label="post comment"
+            type="submit"
             onClick={onCreateComment}
             className="rounded-md bg-lime-300 p-4 text-white duration-200 hover:bg-lime-400"
           >

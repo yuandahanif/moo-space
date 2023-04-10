@@ -15,7 +15,7 @@ const config = {
   parserOptions: {
     project: "./tsconfig.json",
   },
-  plugins: ["@typescript-eslint", "prettier"],
+  plugins: ["@typescript-eslint", "prettier", "cypress"],
   extends: [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",

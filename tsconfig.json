@@ -28,9 +28,11 @@
   },
   "include": [
     "src",
+    "cypress",
     "./src/setupTest.ts",
     "prettier.config.cjs",
     "postcss.config.js",
+    "cypress.config.ts",
     ".eslintrc.cjs"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

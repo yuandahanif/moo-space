@@ -13,6 +13,7 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
+    "e2e": "cypress run",
     "build-storybook": "storybook build"
   },
   "dependencies": {
@@ -44,10 +45,12 @@
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@vitest/coverage-c8": "^0.30.0",
     "autoprefixer": "^10.4.14",
+    "cypress": "^12.9.0",
     "eslint": "^8.0.1",
     "eslint-config-next": "^13.3.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-cypress": "^2.13.2",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-prettier": "^4.2.1",
