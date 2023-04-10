@@ -4,8 +4,8 @@ import { postedAt } from "@utils/index";
 
 interface Props {
   comment: Comment_;
-  onUpvote: (comment: Comment_) => void;
-  onDownvote: (comment: Comment_) => void;
+  onUpvote: (comment: Comment_) => Promise<void>;
+  onDownvote: (comment: Comment_) => Promise<void>;
   profile_id: string;
 }
 
@@ -37,16 +37,16 @@ const CommentCard: React.FC<Props> = ({
           {profile_id !== "" && (
             <>
               <UpvoteButton
-                onClick={() => {
-                  onUpvote(comment);
+                onClick={async () => {
+                  await onUpvote(comment);
                 }}
                 disabled={
                   comment.upVotesBy.find((t) => t === profile_id) !== undefined
                 }
               />
               <DownVoteButton
-                onClick={() => {
-                  onDownvote(comment);
+                onClick={async () => {
+                  await onDownvote(comment);
                 }}
                 disabled={
                   comment.downVotesBy.find((t) => t === profile_id) !==

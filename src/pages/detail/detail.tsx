@@ -151,7 +151,7 @@ const DetailPage = ({ id }: Props): JSX.Element => {
           </div>
 
           <button
-            onClick={() => async () => await onCreateComment()}
+            onClick={onCreateComment}
             className="rounded-md bg-lime-300 p-4 text-white duration-200 hover:bg-lime-400"
           >
             <svg
@@ -187,10 +187,10 @@ const DetailPage = ({ id }: Props): JSX.Element => {
               profile_id={
                 profile.profile?.id != null ? profile.profile?.id : ""
               }
-              onUpvote={(c) => async () => {
+              onUpvote={async (c) => {
                 await onCommentVote(c.id, "up");
               }}
-              onDownvote={(c) => async () => {
+              onDownvote={async (c) => {
                 await onCommentVote(c.id, "down");
               }}
               comment={comment}
