@@ -3,22 +3,20 @@ import Input from "@components/form/input";
 import useOnClickOutside from "@hooks/useClickOutside";
 import useInput from "@hooks/useInput";
 import React, { useRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
+  fixed?: boolean;
   onHide?: () => void;
   onOpen?: () => void;
-  onSubmit?: ({
-    email,
-    name,
-    password,
-  }: {
+  onSubmit?: (arg0: {
     email: string;
     name: string;
     password: string;
   }) => Promise<void>;
 }
 
-const Register: React.FC<Props> = ({ onHide, onSubmit }) => {
+const Register: React.FC<Props> = ({ onHide, onSubmit, fixed = true }) => {
   const [email, setEmailOnChange] = useInput();
   const [name, setNameOnChange] = useInput();
   const [password, setPasswordOnChange] = useInput();
@@ -40,7 +38,12 @@ const Register: React.FC<Props> = ({ onHide, onSubmit }) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex w-full flex-col items-center justify-center gap-4 bg-slate-600 bg-opacity-10 py-6">
+    <div
+      className={twMerge(
+        `flex w-full flex-col items-center justify-center gap-4 bg-slate-600 bg-opacity-10 py-6`,
+        fixed && "fixed bottom-0 left-0 right-0 top-0 z-50 "
+      )}
+    >
       <form
         onSubmit={handleSubmit}
         ref={registerRef}
