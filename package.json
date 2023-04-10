@@ -14,7 +14,8 @@
     "coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
     "e2e": "cypress run",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "ci:test": "vitest --run && start-server-and-test dev http-get://0.0.0.0:5173 e2e"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
@@ -57,6 +58,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.11",
+    "start-server-and-test": "^2.0.0",
     "gh-pages": "^5.0.0",
     "jsdom": "^21.1.1",
     "postcss": "^8.4.21",
