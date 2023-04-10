@@ -21,7 +21,7 @@ const ThreadCard: React.FC<Props> = ({ thread, user }) => {
         )}
 
         <div>
-          <span>
+          <span aria-label="vote count">
             {Number(thread.upVotesBy.length - thread.downVotesBy.length)}
           </span>
         </div>

@@ -23,7 +23,8 @@
       "@utils/*": ["./src/utils/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@states/*": ["./src/states/*"]
-    }
+    },
+    "types": ["vitest/globals"]
   },
   "include": [
     "src",
