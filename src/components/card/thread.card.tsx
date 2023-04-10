@@ -50,7 +50,7 @@ const ThreadCard: React.FC<Props> = ({ thread, user }) => {
         />
 
         <div className="flex gap-2">
-          {thread.category && (
+          {thread.category != null && (
             <span className="cursor-pointer text-sky-600">
               #{thread.category}
             </span>

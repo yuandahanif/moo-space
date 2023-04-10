@@ -1,4 +1,4 @@
-type Thread = {
+interface Thread {
   id: string;
   title: string;
   body: string;
@@ -8,7 +8,7 @@ type Thread = {
   upVotesBy: string[];
   downVotesBy: string[];
   totalComments: number;
-};
+}
 
 interface Thread_Detail extends Thread {
   owner: User;

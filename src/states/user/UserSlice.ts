@@ -11,15 +11,11 @@ const initialState: {
 };
 
 export const fetchAllUsers = createAsyncThunk("user/all", async () => {
-  try {
-    const profile = await api.getAllUsers();
-    if (profile == null) {
-      throw new Error("failed to get profile.");
-    }
-    return profile;
-  } catch (error) {
-    throw error;
+  const profile = await api.getAllUsers();
+  if (profile == null) {
+    throw new Error("failed to get profile.");
   }
+  return profile;
 });
 
 export const userProfileSlice = createSlice({

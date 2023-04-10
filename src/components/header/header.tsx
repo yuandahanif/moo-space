@@ -1,11 +1,15 @@
 import { Link } from "wouter";
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 flex items-center rounded-b-lg border bg-white p-6 py-6 shadow-md">
       <div aria-label="Forum sepi, eh sapi moo . . ." className="h-10 w-10">
         <Link href="/" className="hover:cursor-pointer">
-          <img src="/canvas.svg" alt="canvas logo" className="object-contain hover:cursor-pointer" />
+          <img
+            src="/canvas.svg"
+            alt="canvas logo"
+            className="object-contain hover:cursor-pointer"
+          />
         </Link>
       </div>
 

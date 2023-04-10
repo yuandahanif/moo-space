@@ -1,4 +1,4 @@
-function postedAt(date: string) {
+function postedAt(date: string): string {
   const now = new Date();
   const posted = new Date(date);
   const diff = now.getTime() - posted.getTime();

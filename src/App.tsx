@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import { Route } from "wouter";
 
 type modalType = "login" | "register" | "none";
-function App() {
+function App(): JSX.Element {
   const [displayModal, setDisplayModal] = useState<modalType>("none");
   const [categoryFilter, setCategoryFilter] = useState("");
 
@@ -23,7 +23,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   const threadSetMemo = useMemo(() => {
-    if (!threads.threads) return [];
+    if (threads.threads == null) return [];
     const uniqueCategory = new Set(
       threads.threads.map((thread) => thread.category)
     );
@@ -41,7 +41,7 @@ function App() {
     email: string;
     name: string;
     password: string;
-  }) => {
+  }): Promise<void> => {
     try {
       await api.register({ email, name, password });
       toast("Pendaftaran berhasil!", { pauseOnHover: true });
@@ -58,7 +58,7 @@ function App() {
   }: {
     email: string;
     password: string;
-  }) => {
+  }): Promise<void> => {
     try {
       await dispatch(login({ email, password }));
       toast("Masuk berhasil!", { pauseOnHover: true });
@@ -70,7 +70,7 @@ function App() {
     }
   };
 
-  const onLogout = async () => {
+  const onLogout = async (): Promise<void> => {
     try {
       dispatch(removeProfile());
       toast("Keluar berhasil!", { pauseOnHover: true });
@@ -84,20 +84,28 @@ function App() {
 
   useEffect(() => {
     void dispatch(fetchProfile());
-  }, []);
+  }, [dispatch]);
 
   return (
     <MainLayout>
-      {displayModal == "register" && (
+      {displayModal === "register" && (
         <Register
-          onSubmit={(e) => void onRegister(e)}
-          onHide={() => setDisplayModal("none")}
+          onSubmit={(e) => async () => {
+            await onRegister(e);
+          }}
+          onHide={() => {
+            setDisplayModal("none");
+          }}
         />
       )}
-      {displayModal == "login" && (
+      {displayModal === "login" && (
         <Login
-          onSubmit={(e) => void onLogin(e)}
-          onHide={() => setDisplayModal("none")}
+          onSubmit={(e) => async () => {
+            await onLogin(e);
+          }}
+          onHide={() => {
+            setDisplayModal("none");
+          }}
         />
       )}
 
@@ -118,8 +126,8 @@ function App() {
 
         <aside className="flex w-1/4 flex-col gap-y-4 py-6">
           <div className="sticky top-24 flex flex-col items-center rounded-lg border bg-white py-8 shadow-sm duration-300 hover:shadow-lg">
-            {profile.status == "loading" && <Loading />}
-            {profile.status == "error" && (
+            {profile.status === "loading" && <Loading />}
+            {profile.status === "error" && (
               <>
                 <div>
                   <button
@@ -144,9 +152,11 @@ function App() {
               </>
             )}
 
-            {profile.status == "success" && profile.profile && (
+            {profile.status === "success" && profile.profile != null && (
               <ProfileCard
-                onLogout={() => void onLogout()}
+                onLogout={() => async () => {
+                  await onLogout();
+                }}
                 profile={profile.profile}
               />
             )}
@@ -159,7 +169,7 @@ function App() {
                 key={value}
                 onClick={() => {
                   setCategoryFilter((state) =>
-                    state == "" ? value : state == value ? "" : value
+                    state === "" ? value : state === value ? "" : value
                   );
                 }}
               >

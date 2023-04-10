@@ -15,9 +15,23 @@ const config = {
   parserOptions: {
     project: "./tsconfig.json",
   },
-  plugins: ["@typescript-eslint"],
-  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
+  plugins: ["@typescript-eslint", "prettier"],
+  extends: [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "standard-with-typescript",
+    "plugin:prettier/recommended",
+  ],
   rules: {
+    eqeqeq: ["error", "smart"],
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        format: ["snake_case", "camelCase", "UPPER_CASE", "PascalCase"],
+        selector: ["function", "variable"],
+        leadingUnderscore: "allow",
+      },
+    ],
     "@next/next/no-img-element": "off",
     "@typescript-eslint/consistent-type-imports": [
       "warn",

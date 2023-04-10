@@ -10,22 +10,23 @@ interface Props {
   onSubmit?: ({ email, password }: { email: string; password: string }) => void;
 }
 
-const Login: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
+const Login: React.FC<Props> = ({ onHide, onSubmit }) => {
   const [email, setEmailOnChange] = useInput();
   const [password, setPasswordOnChange] = useInput();
 
   const registerRef = useRef<null | HTMLFormElement>(null);
   useOnClickOutside(registerRef, () => {
-    if (onHide) onHide();
+    if (onHide != null) onHide();
   });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (onSubmit)
+    if (onSubmit != null) {
       onSubmit({
         email,
         password,
       });
+    }
   };
 
   return (
@@ -72,5 +73,4 @@ const Login: React.FC<Props> = ({ onHide, onOpen, onSubmit }) => {
     </div>
   );
 };
-
 export default Login;

@@ -4,22 +4,22 @@ import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { fetchLeaderboard } from "@states/leaderboard/LeaderboardSlice";
 import { useEffect } from "react";
 
-const LeaderboardPage = () => {
+const LeaderboardPage = (): JSX.Element => {
   const data = useAppSelector((state) => state.leaderboard);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     void dispatch(fetchLeaderboard());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="grow">
       <h1 className="text-2xl">Leaderboard</h1>
       <div className="mt-8 flex flex-col gap-y-4">
-        {data.status == "error" && <Error />}
-        {data.status == "loading" && <Loading />}
+        {data.status === "error" && <Error />}
+        {data.status === "loading" && <Loading />}
 
-        {data.status == "success" &&
+        {data.status === "success" &&
           data.leaderboard.map((t) => (
             <div key={t.user.id} className="flex border p-3">
               <img

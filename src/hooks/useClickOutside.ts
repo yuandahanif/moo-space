@@ -3,11 +3,14 @@ import { useEffect } from "react";
 function useOnClickOutside(
   ref: React.MutableRefObject<HTMLElement | null>,
   handler: (arg0: MouseEvent | TouchEvent) => void
-) {
+): void {
   useEffect(() => {
-    const listener = (event: MouseEvent | TouchEvent) => {
+    const listener = (event: MouseEvent | TouchEvent): void => {
       // Do nothing if clicking ref's element or descendent elements
-      if (!ref?.current || ref.current?.contains(event?.target as Node)) {
+      if (
+        ref?.current == null ||
+        ref.current?.contains(event?.target as Node)
+      ) {
         return;
       }
       handler(event);

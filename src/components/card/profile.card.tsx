@@ -8,7 +8,7 @@ interface Props {
 const ProfileCard: React.FC<Props> = ({ profile, onLogout }) => {
   return (
     <>
-      <div className="h-16 w-16 rounded-full bg-red-300 overflow-hidden flex justify-center items-center">
+      <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-red-300">
         <img src={profile.avatar} alt={profile.name} className="object-cover" />
       </div>
       <span>{profile?.name}</span>

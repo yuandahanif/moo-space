@@ -4,7 +4,7 @@ import useInput from "@hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { fetchThreadDetail } from "@states/thread/ThreadDetailSlice";
 import { useEffect, useRef } from "react";
-import { toast } from "react-toastify";
+import { type Id, toast } from "react-toastify";
 
 import { postedAt } from "@utils/index";
 import UpvoteButton from "@components/button/upvote.button";
@@ -17,7 +17,7 @@ interface Props {
   id: string;
 }
 
-const DetailPage = ({ id }: Props) => {
+const DetailPage = ({ id }: Props): JSX.Element => {
   const commentFieldRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const thread = useAppSelector((state) => state.threadDetail);
@@ -25,14 +25,14 @@ const DetailPage = ({ id }: Props) => {
 
   const [content, _, setContent] = useInput();
 
-  const onCreateComment = async () => {
+  const onCreateComment = async (): Promise<Id | undefined> => {
     try {
-      if (content == "") return toast.error("Konten tidak boleh kosong.");
+      if (content === "") return toast.error("Konten tidak boleh kosong.");
       if (thread.thread == null) return toast.error("Konten belom dimuat.");
 
       await dispatch(createComment({ content, id: thread.thread?.id }));
 
-      if (commentFieldRef.current) {
+      if (commentFieldRef.current != null) {
         commentFieldRef.current.innerHTML = "";
         setContent("");
       }
@@ -47,8 +47,8 @@ const DetailPage = ({ id }: Props) => {
     }
   };
 
-  const onVote = async (type: Vote_type) => {
-    if (thread.thread?.id) {
+  const onVote = async (type: Vote_type): Promise<void> => {
+    if (thread.thread?.id != null) {
       await dispatch(voteThread({ id: thread.thread?.id, type }));
       await dispatch(fetchThreadDetail(id));
       toast.success("Berhasil melaukan vote");
@@ -57,11 +57,12 @@ const DetailPage = ({ id }: Props) => {
     }
   };
 
-  const onCommentVote = async (comment_id: string, type: Vote_type) => {
-    if (thread.thread?.id) {
-      await dispatch(
-        voteComment({ id: thread.thread?.id, type, comment_id: comment_id })
-      );
+  const onCommentVote = async (
+    comment_id: string,
+    type: Vote_type
+  ): Promise<void> => {
+    if (thread.thread?.id != null) {
+      await dispatch(voteComment({ id: thread.thread?.id, type, comment_id }));
       await dispatch(fetchThreadDetail(id));
       toast.success("Berhasil melaukan vote");
     } else {
@@ -71,14 +72,14 @@ const DetailPage = ({ id }: Props) => {
 
   useEffect(() => {
     void dispatch(fetchThreadDetail(id));
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <div className="grow">
       <div className="flex flex-col gap-y-4">
-        {thread.status == "error" && <Error />}
-        {thread.status == "loading" && <Loading />}
-        {thread.status == "success" && (
+        {thread.status === "error" && <Error />}
+        {thread.status === "loading" && <Loading />}
+        {thread.status === "success" && (
           <div>
             <h1 className="mb-4 text-2xl font-semibold">
               {thread.thread?.title}
@@ -103,22 +104,27 @@ const DetailPage = ({ id }: Props) => {
         </span>
       </div>
 
-      {profile.profile?.id && thread?.thread != null ? (
+      {profile.profile?.id != null && thread?.thread != null ? (
         <div className="mb-8 flex items-end gap-x-4">
           <div className="flex flex-col items-center justify-start gap-2 pr-0">
             <UpvoteButton
-              onClick={() => void onVote("up")}
+              onClick={() => async () => {
+                await onVote("up");
+              }}
               disabled={
-                thread.thread.upVotesBy.find((t) => t == profile.profile?.id) !=
-                undefined
+                thread.thread.upVotesBy.find(
+                  (t) => t === profile.profile?.id
+                ) !== undefined
               }
             />
             <DownVoteButton
-              onClick={() => void onVote("down")}
+              onClick={() => async () => {
+                await onVote("down");
+              }}
               disabled={
                 thread.thread.downVotesBy.find(
-                  (t) => t == profile.profile?.id
-                ) != undefined
+                  (t) => t === profile.profile?.id
+                ) !== undefined
               }
             />
 
@@ -137,13 +143,15 @@ const DetailPage = ({ id }: Props) => {
             <div
               ref={commentFieldRef}
               contentEditable
-              onInput={(e) => setContent(e.currentTarget.innerHTML)}
+              onInput={(e) => {
+                setContent(e.currentTarget.innerHTML);
+              }}
               className="flex min-h-[100px] w-full rounded-lg border bg-white p-2 shadow-sm"
             />
           </div>
 
           <button
-            onClick={() => void onCreateComment()}
+            onClick={() => async () => await onCreateComment()}
             className="rounded-md bg-lime-300 p-4 text-white duration-200 hover:bg-lime-400"
           >
             <svg
@@ -176,9 +184,15 @@ const DetailPage = ({ id }: Props) => {
         <div className="flex flex-col gap-4">
           {thread.thread?.comments.map((comment) => (
             <CommentCard
-              profile_id={profile.profile?.id || ""}
-              onUpvote={(c) => void onCommentVote(c.id, "up")}
-              onDownvote={(c) => void onCommentVote(c.id, "down")}
+              profile_id={
+                profile.profile?.id != null ? profile.profile?.id : ""
+              }
+              onUpvote={(c) => async () => {
+                await onCommentVote(c.id, "up");
+              }}
+              onDownvote={(c) => async () => {
+                await onCommentVote(c.id, "down");
+              }}
               comment={comment}
               key={comment.id}
             />

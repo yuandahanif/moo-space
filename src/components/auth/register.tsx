@@ -25,17 +25,18 @@ const Register: React.FC<Props> = ({ onHide, onSubmit }) => {
 
   const registerRef = useRef<null | HTMLFormElement>(null);
   useOnClickOutside(registerRef, () => {
-    if (onHide) onHide();
+    if (onHide != null) onHide();
   });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (onSubmit)
+    if (onSubmit != null) {
       onSubmit({
         email,
         name,
         password,
       });
+    }
   };
 
   return (

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { createThread, fetchAllThreads } from "@states/thread/ThreadSlice";
 import { fetchAllUsers } from "@states/user/UserSlice";
 import React, { useEffect, useMemo, useRef } from "react";
-import { toast } from "react-toastify";
+import { type Id, toast } from "react-toastify";
 
 interface Props {
   categoryFilter: string;
@@ -25,57 +25,66 @@ const LandingPage: React.FC<Props> = ({ categoryFilter = "" }) => {
   const [category, setCategoryOnChange, setCategory] = useInput();
 
   const threadsMemo = useMemo(() => {
-    if (categoryFilter == "") {
+    if (categoryFilter === "") {
       return threads.threads;
     }
 
     const newThreads = threads.threads.filter(
-      (thread) => thread.category == categoryFilter
+      (thread) => thread.category === categoryFilter
     );
     return newThreads;
   }, [categoryFilter, threads]);
 
-  const getUserById = (id: string) => {
+  const getUserById = (id: string): User | undefined => {
     return users.all.find((user) => user.id === id);
   };
 
-  const onCreateThread = async () => {
+  const onCreateThread = async (): Promise<void> => {
     try {
-      if (title == "") return toast.error("judul tidak boleh kosong.");
-      if (content == "") return toast.error("Konten tidak boleh kosong.");
-
       await dispatch(
         createThread({
           body: content,
-          category: category,
-          title: title,
+          category,
+          title,
         })
       );
 
       setTitle("");
       setCategory("");
 
-      if (commentFieldRef.current) {
+      if (commentFieldRef.current != null) {
         commentFieldRef.current.innerHTML = "";
         setContent("");
       }
-
-      toast.success("Berhasil membuat postingan.");
     } catch (error) {
       console.error(error);
-
-      toast.error("Gagal membuat postingan.");
     }
+  };
+
+  const handleCreateThread: React.MouseEventHandler<HTMLButtonElement> = (
+    e
+  ) => {
+    e.preventDefault();
+    if (title === "") return toast.error("judul tidak boleh kosong.");
+    if (content === "") return toast.error("Konten tidak boleh kosong.");
+    onCreateThread()
+      .then(() => {
+        toast.success("Berhasil membuat postingan.");
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Gagal membuat postingan.");
+      });
   };
 
   useEffect(() => {
     void dispatch(fetchAllUsers());
     void dispatch(fetchAllThreads());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="grow">
-      {profile.profile?.id && (
+      {profile.profile?.id != null && (
         <div className="mb-8 flex items-end gap-x-4">
           <div className="flex w-full flex-col gap-4">
             <div className="flex w-full gap-6">
@@ -92,14 +101,16 @@ const LandingPage: React.FC<Props> = ({ categoryFilter = "" }) => {
             </div>
             <div
               ref={commentFieldRef}
-              onInput={(e) => setContent(e.currentTarget.innerHTML)}
+              onInput={(e) => {
+                setContent(e.currentTarget.innerHTML);
+              }}
               contentEditable
               className="flex min-h-[100px] w-full rounded-lg border bg-white p-2 shadow-sm"
             />
           </div>
 
           <button
-            onClick={() => void onCreateThread()}
+            onClick={handleCreateThread}
             className="rounded-md bg-lime-300 p-4 text-white duration-200 hover:bg-lime-400"
           >
             <svg
@@ -125,11 +136,11 @@ const LandingPage: React.FC<Props> = ({ categoryFilter = "" }) => {
       </div>
 
       <div className="flex flex-col gap-y-4">
-        {threads.status == "error" || (users.status == "error" && <Error />)}
-        {threads.status == "loading" ||
-          (users.status == "loading" && <Loading />)}
-        {threads.status == "success" &&
-          users.status == "success" &&
+        {threads.status === "error" || (users.status === "error" && <Error />)}
+        {threads.status === "loading" ||
+          (users.status === "loading" && <Loading />)}
+        {threads.status === "success" &&
+          users.status === "success" &&
           threadsMemo.map((t) => (
             <ThreadCard
               key={t.id}

@@ -11,32 +11,24 @@ const initialState: {
 };
 
 export const fetchProfile = createAsyncThunk("user/ownProfile", async () => {
-  try {
-    const profile = await api.getOwnProfile();
-    if (profile == null) {
-      throw new Error("failed to get profile.");
-    }
-    return profile;
-  } catch (error) {
-    throw error;
+  const profile = await api.getOwnProfile();
+  if (profile == null) {
+    throw new Error("failed to get profile.");
   }
+  return profile;
 });
 
 export const login = createAsyncThunk(
   "user/login",
   async ({ email, password }: { email: string; password: string }) => {
-    try {
-      const token = await api.login({ email, password });
+    const token = await api.login({ email, password });
 
-      if (token == null) {
-        throw new Error("failed to login.");
-      }
-
-      api.putAccessToken(token);
-      return token;
-    } catch (error) {
-      throw error;
+    if (token == null) {
+      throw new Error("failed to login.");
     }
+
+    api.putAccessToken(token);
+    return token;
   }
 );
 

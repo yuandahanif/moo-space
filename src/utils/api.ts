@@ -1,14 +1,17 @@
 const api = (() => {
   const BASE_URL = import.meta.env.VITE_API_URL as string;
 
-  async function _fetchWithAuth(url: string, options: RequestInit = {}) {
+  async function _fetchWithAuth(
+    url: string,
+    options: RequestInit = {}
+  ): Promise<Response> {
     const accessToken = getAccessToken();
 
-    if (!accessToken) {
+    if (accessToken == null) {
       throw new Error("No Access Token");
     }
 
-    return fetch(url, {
+    return await fetch(url, {
       ...options,
       headers: {
         ...options.headers,
@@ -17,16 +20,16 @@ const api = (() => {
     });
   }
 
-  function putAccessToken(token: string) {
+  function putAccessToken(token: string): void {
     localStorage.setItem("accessToken", token);
   }
 
-  function getAccessToken() {
+  function getAccessToken(): string | null {
     return localStorage.getItem("accessToken");
   }
 
-  function removeAccessToken() {
-    return localStorage.removeItem("accessToken");
+  function removeAccessToken(): void {
+    localStorage.removeItem("accessToken");
   }
 
   async function register({
@@ -37,7 +40,7 @@ const api = (() => {
     email: string;
     name: string;
     password: string;
-  }) {
+  }): Promise<User> {
     const response = await fetch(`${BASE_URL}/register`, {
       method: "POST",
       headers: {
@@ -70,7 +73,7 @@ const api = (() => {
   }: {
     email: string;
     password: string;
-  }) {
+  }): Promise<string> {
     const response = await fetch(`${BASE_URL}/login`, {
       method: "POST",
       headers: {
@@ -99,14 +102,14 @@ const api = (() => {
     return token;
   }
 
-  async function getOwnProfile() {
+  async function getOwnProfile(): Promise<User> {
     const response = await _fetchWithAuth(`${BASE_URL}/users/me`);
 
     const responseJson = (await response.json()) as API_Wrapper<{ user: User }>;
 
     const { status, message } = responseJson;
 
-    if (status != "success") {
+    if (status !== "success") {
       throw new Error(message);
     }
 
@@ -117,7 +120,7 @@ const api = (() => {
     return user;
   }
 
-  async function getAllUsers() {
+  async function getAllUsers(): Promise<User[]> {
     const response = await fetch(`${BASE_URL}/users`);
 
     const responseJson = (await response.json()) as API_Wrapper<{
@@ -137,7 +140,7 @@ const api = (() => {
     return users;
   }
 
-  async function getAllThreads() {
+  async function getAllThreads(): Promise<Thread[]> {
     const response = await fetch(`${BASE_URL}/threads`);
     const responseJson = (await response.json()) as API_Wrapper<{
       threads: Thread[];
@@ -156,7 +159,7 @@ const api = (() => {
     return threads;
   }
 
-  async function getThreadDetail(id: string) {
+  async function getThreadDetail(id: string): Promise<Thread_Detail> {
     const response = await fetch(`${BASE_URL}/threads/${id}`);
 
     const responseJson = (await response.json()) as API_Wrapper<{
@@ -184,7 +187,7 @@ const api = (() => {
     title: string;
     body: string;
     category: string;
-  }) {
+  }): Promise<Thread> {
     const response = await _fetchWithAuth(`${BASE_URL}/threads`, {
       method: "POST",
       headers: {
@@ -220,7 +223,7 @@ const api = (() => {
   }: {
     id: string;
     content: string;
-  }) {
+  }): Promise<Comment> {
     const response = await _fetchWithAuth(
       `${BASE_URL}/threads/${id}/comments`,
       {
@@ -251,7 +254,7 @@ const api = (() => {
     return comment;
   }
 
-  async function voteThread(id: string, type: Vote_type) {
+  async function voteThread(id: string, type: Vote_type): Promise<Vote> {
     let url = `${BASE_URL}/threads/`;
 
     switch (type) {
@@ -295,18 +298,18 @@ const api = (() => {
     thread_id: string,
     comment_id: string,
     type: Vote_type
-  ) {
+  ): Promise<Vote> {
     let url = `${BASE_URL}/threads/${thread_id}/comments/${comment_id}/`;
 
     switch (type) {
       case "down":
-        url += `down-vote`;
+        url += "down-vote";
         break;
       case "netural":
-        url += `neutral-vote`;
+        url += "neutral-vote";
         break;
       case "up":
-        url += `up-vote`;
+        url += "up-vote";
         break;
       default:
         break;
@@ -336,7 +339,7 @@ const api = (() => {
     return vote;
   }
 
-  async function getLeaderboard() {
+  async function getLeaderboard(): Promise<Leaderboard[]> {
     const response = await fetch(`${BASE_URL}/leaderboards`);
     const responseJson = (await response.json()) as API_Wrapper<{
       leaderboards: Leaderboard[];

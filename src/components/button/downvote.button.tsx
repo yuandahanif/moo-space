@@ -1,9 +1,9 @@
 import { twMerge } from "tailwind-merge";
 
 type Props = React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
 
 const DownVoteButton: React.FC<Props> = ({ className, ...rest }) => {
   return (
