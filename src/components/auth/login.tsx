@@ -7,7 +7,13 @@ import React, { useRef } from "react";
 interface Props {
   onHide?: () => void;
   onOpen?: () => void;
-  onSubmit?: ({ email, password }: { email: string; password: string }) => void;
+  onSubmit?: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => Promise<void>;
 }
 
 const Login: React.FC<Props> = ({ onHide, onSubmit }) => {
@@ -22,7 +28,7 @@ const Login: React.FC<Props> = ({ onHide, onSubmit }) => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     if (onSubmit != null) {
-      onSubmit({
+      void onSubmit({
         email,
         password,
       });

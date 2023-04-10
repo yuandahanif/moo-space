@@ -15,7 +15,7 @@ interface Props {
     email: string;
     name: string;
     password: string;
-  }) => void;
+  }) => Promise<void>;
 }
 
 const Register: React.FC<Props> = ({ onHide, onSubmit }) => {
@@ -31,7 +31,7 @@ const Register: React.FC<Props> = ({ onHide, onSubmit }) => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     if (onSubmit != null) {
-      onSubmit({
+      void onSubmit({
         email,
         name,
         password,

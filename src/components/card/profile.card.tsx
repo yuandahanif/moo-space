@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {
   profile: User;
-  onLogout: () => void;
+  onLogout: () => Promise<void>;
 }
 
 const ProfileCard: React.FC<Props> = ({ profile, onLogout }) => {
@@ -15,7 +15,13 @@ const ProfileCard: React.FC<Props> = ({ profile, onLogout }) => {
       <span>{profile?.email}</span>
 
       <div className="mt-4 text-sm">
-        <button className="hover:underline" type="button" onClick={onLogout}>
+        <button
+          className="hover:underline"
+          type="button"
+          onClick={() => {
+            void onLogout();
+          }}
+        >
           Keluar
         </button>
       </div>

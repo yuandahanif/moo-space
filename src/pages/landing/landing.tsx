@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/useRedux";
 import { createThread, fetchAllThreads } from "@states/thread/ThreadSlice";
 import { fetchAllUsers } from "@states/user/UserSlice";
 import React, { useEffect, useMemo, useRef } from "react";
-import { type Id, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface Props {
   categoryFilter: string;
