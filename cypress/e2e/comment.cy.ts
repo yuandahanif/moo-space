@@ -26,9 +26,9 @@ describe("Comment", () => {
     cy.contains("mona@gmail.com");
 
     cy.contains("Pengalaman Belajar React di Dicoding").click();
-    cy.get("div[contenteditable='true']").type("halooo dari cypress");
+    cy.get("div[contenteditable='true']").type("halooo dari cypress :3");
     cy.get("button[aria-label='post comment']").click();
 
-    cy.contains("halooo dari cypress");
+    cy.contains("halooo dari cypress :3");
   });
 });
