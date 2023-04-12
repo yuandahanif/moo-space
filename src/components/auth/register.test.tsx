@@ -52,7 +52,7 @@ describe("Register component", () => {
     expect(password?.getAttribute("value")).toBe(password_value);
 
     if (submitBtn != null) {
-      // await user.click(submitBtn);
+      await user.click(submitBtn);
     }
 
     expect(mockRegistrationSuccess).toHaveBeenCalledOnce();
