@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  type PayloadAction,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 import api from "@utils/api";
 
 // Define the initial state using that type
@@ -41,6 +45,10 @@ export const userProfileSlice = createSlice({
       state.profile = null;
       api.removeAccessToken();
     },
+    adduser: (state, action: PayloadAction<User>) => {
+      state.status = "success";
+      state.profile = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -74,6 +82,6 @@ export const userProfileSlice = createSlice({
   },
 });
 
-export const { removeProfile } = userProfileSlice.actions;
+export const { removeProfile, adduser } = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;
