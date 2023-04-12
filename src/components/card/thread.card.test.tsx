@@ -1,8 +1,18 @@
-import { describe, expect, it, afterEach, vi } from "vitest";
+import { describe, expect, it, afterEach, vi, beforeEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import ThreadCard from "./thread.card";
 import { DB_THREAD, DB_USERS } from "src/__mocks__/db";
 import { _registerNewUser } from "src/__mocks__/regsitration";
+
+/**
+ * test scenario for ThreadCard component
+ *
+ * - ThreadCard component
+ *  - Should have correct title.
+ *  - Should render correct vote
+ *  -
+ *
+ */
 
 describe("ThreadCard component", () => {
   afterEach(() => {
@@ -10,7 +20,11 @@ describe("ThreadCard component", () => {
     vi.restoreAllMocks();
   });
 
-  it("Thread card should have correct title.", async () => {
+  beforeEach(({ meta }) => {
+    console.log(meta.name);
+  });
+
+  it("Should have correct title.", async () => {
     const wrapper = render(
       <ThreadCard thread={DB_THREAD} user={DB_USERS[0]} />
     );
@@ -21,7 +35,7 @@ describe("ThreadCard component", () => {
     expect(title.textContent).toEqual(DB_THREAD.title);
   });
 
-  it("Thread card render correct vote.", async () => {
+  it("Should render correct vote.", async () => {
     const wrapper = render(
       <ThreadCard thread={DB_THREAD} user={DB_USERS[0]} />
     );
