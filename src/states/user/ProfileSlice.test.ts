@@ -1,6 +1,5 @@
-import { reduce } from "cypress/types/bluebird";
 import reducer, { adduser, removeProfile } from "./ProfileSlice";
-import { describe, expect, it, afterEach, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("Profile Slict Test", () => {
   const InitSlice: { profile: User | null; status: API_Status } = {
